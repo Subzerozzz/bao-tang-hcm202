@@ -1,0 +1,1378 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bảo tàng Tư tưởng Hồ Chí Minh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Serif+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap">
+<style>
+@property --fl { syntax: '<percentage>'; inherits: true; initial-value: 64%; }
+:root{
+  --ink:#f3e9d6; --mute:#bfae94; --dim:#8c7b68; --gold:#d6af5c; --gold-2:#c9a14e; --gold-3:#f0d58c;
+  --red:#b8322a; --ok:#5fbf84; --bad:#e2685a;
+  --glass:rgba(17,11,9,.9); --line:rgba(214,175,92,.4);
+  --f-display:"Noto Serif Display","Noto Serif",Georgia,"Times New Roman",serif;
+  --f-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+html,body{ height:100%; }
+body{ margin:0; background:#0d0807; color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+button{ font:inherit; color:inherit; }
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+svg.i{ width:20px; height:20px; flex:none; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+:focus-visible{ outline:2px solid var(--gold-3); outline-offset:3px; border-radius:8px; }
+
+.app{ position:relative; height:100%; min-height:460px; overflow:hidden; overflow:clip; }
+.scene{ position:absolute; inset:0; overflow:hidden; overflow:clip; transition:--fl .9s cubic-bezier(.3,.7,.2,1);
+  background:radial-gradient(120% 85% at 50% 18%, #3d1e16 0%, #1d110c 55%, #0c0706 100%); }
+.scene.tone-pt{ background:radial-gradient(120% 85% at 50% 18%, #1e3a30 0%, #0f1f19 55%, #060c0a 100%); }
+.scene.m-corridor{ --fl:64%; } .scene.m-exhibit{ --fl:56%; } .scene.m-quiz{ --fl:50%; }
+.scene{ touch-action:pan-y; }
+@media (max-width: 700px){ .scene.m-corridor{ --fl:56%; } .scene.m-exhibit{ --fl:48%; } .scene.m-quiz{ --fl:40%; } }
+
+/* floor */
+.floor-bg{ position:absolute; left:0; right:0; top:var(--fl); bottom:0; z-index:0; background:linear-gradient(180deg, #2c1b13 0%, #170e0a 40%, #0a0605 100%); }
+.floor-bg::after{ content:""; position:absolute; inset:0; background:radial-gradient(60% 50% at 50% 0%, rgba(255,196,120,.13), transparent 70%); }
+.scene.tone-pt .floor-bg{ background:linear-gradient(180deg, #1a2a23 0%, #0d1612 40%, #050907 100%); }
+
+/* world + parallax */
+.world, .fg{ position:absolute; inset:0; will-change:transform; }
+.world{ z-index:1; }
+.fg{ z-index:6; pointer-events:none; }
+.wall-strip{ position:absolute; top:0; height:var(--fl); left:calc(var(--S) * -2); width:calc(var(--S) * (var(--n) + 6)); background:repeating-linear-gradient(90deg, rgba(255,230,190,.04) 0 2px, transparent 2px 150px); }
+.frieze{ position:absolute; top:0; height:30px; left:calc(var(--S) * -2); width:calc(var(--S) * (var(--n) + 6)); border-bottom:2px solid rgba(201,161,78,.55); opacity:.55;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='28'%3E%3Cpath d='M0 20 L6 8 L12 20 L18 8 L24 20 L30 8 L36 20 L42 8 L48 20' fill='none' stroke='%23c9a14e' stroke-width='1.4'/%3E%3Ccircle cx='12' cy='5' r='2' fill='none' stroke='%23c9a14e' stroke-width='1'/%3E%3Ccircle cx='36' cy='5' r='2' fill='none' stroke='%23c9a14e' stroke-width='1'/%3E%3C/svg%3E") repeat-x 0 0 / 48px 28px; }
+.baseboard{ position:absolute; top:calc(var(--fl) - 12px); height:12px; left:calc(var(--S) * -2); width:calc(var(--S) * (var(--n) + 6)); background:linear-gradient(#3b2418, #1a0f0a); border-top:2px solid #b8913f; }
+.carpet{ position:absolute; top:calc(var(--fl) + 2.4%); height:6.4%; left:calc(var(--S) * -2); width:calc(var(--S) * (var(--n) + 6)); border-top:2px solid #c9a14e; border-bottom:2px solid #9a7832; box-shadow:0 10px 22px rgba(0,0,0,.5);
+  background:repeating-linear-gradient(90deg, transparent 0 46px, rgba(236,196,112,.3) 46px 48px), linear-gradient(180deg, #86201a, #5a120d); }
+.scene.tone-pt .carpet{ background:repeating-linear-gradient(90deg, transparent 0 46px, rgba(236,196,112,.28) 46px 48px), linear-gradient(180deg, #1f5446, #123429); }
+.refl{ position:absolute; top:calc(var(--fl) + 11%); width:170px; height:60px; margin-left:-85px; background:radial-gradient(ellipse, rgba(255,170,80,.2), transparent 70%); pointer-events:none; }
+
+/* lanterns */
+.lantern{ position:absolute; top:0; height:calc(var(--fl) * .32); width:44px; margin-left:-22px; display:flex; flex-direction:column; align-items:center; transform-origin:50% 0; animation:sway 5.5s ease-in-out infinite; z-index:2; pointer-events:none; }
+.lantern:nth-of-type(2n){ animation-duration:6.4s; animation-delay:-2s; }
+.lantern .cord{ flex:1; width:2px; background:linear-gradient(#6b5530, #c9a14e); }
+.lantern svg{ width:40px; height:58px; flex:none; filter:drop-shadow(0 0 14px rgba(255,150,60,.55)); }
+.lantern .halo{ position:absolute; bottom:-50px; left:50%; width:200px; height:200px; margin-left:-100px; background:radial-gradient(circle, rgba(255,170,80,.22), transparent 65%); }
+
+/* gates */
+.gate{ position:absolute; bottom:calc(100% - var(--fl)); width:var(--gw); transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; background:none; border:0; padding:0; cursor:pointer; z-index:1; }
+.g-glow{ position:absolute; left:-60%; right:-60%; top:-10%; bottom:-10%; background:radial-gradient(ellipse at 50% 55%, rgba(255,196,110,.22), transparent 62%); opacity:0; transition:opacity .8s; pointer-events:none; }
+.gate.here .g-glow{ opacity:1; }
+.g-plaque{ position:relative; margin-bottom:26px; padding:6px 12px 7px; min-width:calc(var(--gw) * .8); max-width:calc(var(--gw) * 1.35); background:linear-gradient(#26170f, #140c09); border:1px solid #9d7c38; border-radius:6px; box-shadow:0 10px 24px rgba(0,0,0,.55); display:grid; gap:3px; justify-items:center; transition:transform .3s, box-shadow .3s, border-color .3s; }
+.g-name{ font-family:var(--f-display); font-weight:600; font-size:clamp(12.5px, calc(var(--gw) * .085), 17px); line-height:1.2; color:#f0dca6; text-align:center; text-wrap:balance; }
+.g-stars{ display:flex; gap:2px; }
+.g-stars svg{ width:12px; height:12px; fill:#4a3a28; }
+.g-stars svg.on{ fill:var(--gold); }
+.g-stars.pop svg.on{ animation:starPop .6s cubic-bezier(.2,1.6,.4,1) both; }
+.g-stars.pop svg.on:nth-child(2){ animation-delay:.12s; } .g-stars.pop svg.on:nth-child(3){ animation-delay:.24s; } .g-stars.pop svg.on:nth-child(4){ animation-delay:.36s; }
+.gate:hover .g-plaque, .gate.here .g-plaque{ border-color:var(--gold); box-shadow:0 0 0 1px rgba(214,175,92,.4), 0 0 26px rgba(240,190,90,.3), 0 10px 24px rgba(0,0,0,.55); }
+.gate:hover .g-plaque{ transform:translateY(-3px); }
+.g-arch{ position:relative; width:100%; height:var(--gh); border-radius:calc(var(--gw) / 2) calc(var(--gw) / 2) 0 0; background:#0c0705; overflow:hidden; perspective:800px;
+  box-shadow:0 0 0 7px #3a2418, 0 0 0 10px #c9a14e, 0 0 0 14px #21140d, 0 22px 44px rgba(0,0,0,.6); transition:height .6s, width .6s; }
+.g-key{ position:absolute; top:-17px; left:50%; width:34px; height:34px; margin-left:-17px; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle at 35% 30%, #f6de98, #a67c2e 75%); color:#2a1a0e; box-shadow:0 0 0 3px #21140d, 0 4px 10px rgba(0,0,0,.5); z-index:3; }
+.g-key .i{ width:18px; height:18px; stroke-width:2; }
+.g-frame{ position:relative; display:block; width:100%; }
+.g-arch{ display:block; }
+.g-in{ position:absolute; inset:0; background:radial-gradient(ellipse at 50% 88%, #fff0c8 0%, #f4b650 26%, #8a4214 60%, #1a0c06 100%); opacity:.25; transition:opacity .9s; }
+.gate.done .g-in, .gate.open .g-in{ opacity:1; }
+.g-door{ position:absolute; top:0; bottom:0; width:50%; transition:transform 1.1s cubic-bezier(.3,.7,.2,1); backface-visibility:hidden;
+  background:radial-gradient(circle, #d8b25c 0 2px, transparent 2.6px) 50% 14px / 18px 26px, linear-gradient(90deg, rgba(0,0,0,.28), transparent 22%, transparent 78%, rgba(0,0,0,.34)), linear-gradient(180deg, #74371f, #4b2213);
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,.28), inset 0 0 0 6px rgba(214,175,92,.28); }
+.g-door.l{ left:0; transform-origin:0 50%; } .g-door.r{ right:0; transform-origin:100% 50%; }
+.g-door i{ position:absolute; top:56%; width:13px; height:13px; border:2.5px solid #d8b25c; border-radius:50%; }
+.g-door.l i{ right:9px; } .g-door.r i{ left:9px; }
+.gate.done .g-door.l{ transform:rotateY(-24deg); } .gate.done .g-door.r{ transform:rotateY(24deg); }
+.gate.open .g-door.l{ transform:rotateY(-84deg); } .gate.open .g-door.r{ transform:rotateY(84deg); }
+.g-spill{ position:absolute; top:100%; left:50%; width:160%; height:70px; margin-left:-80%; background:radial-gradient(ellipse at 50% 0%, rgba(255,200,110,.38), transparent 70%); opacity:0; transition:opacity .9s; pointer-events:none; }
+.gate.done .g-spill, .gate.open .g-spill{ opacity:1; }
+.g-lamp{ position:absolute; bottom:calc(var(--gh) * .58); width:10px; height:18px; border-radius:5px 5px 3px 3px; background:radial-gradient(circle at 50% 40%, #fff6d6, #f0a93c 70%); box-shadow:0 0 18px 6px rgba(255,180,80,.32); }
+.g-lamp.l{ left:-30px; } .g-lamp.r{ right:-30px; }
+.gate.here .g-lamp{ animation:flicker 2.4s infinite; }
+.g-lock{ position:absolute; left:50%; top:52%; width:34px; height:34px; margin:-17px 0 0 -17px; border-radius:50%; background:#1a0f0a; border:2px solid #c9a14e; display:grid; place-items:center; color:var(--gold); z-index:2; }
+.g-lock .i{ width:17px; height:17px; }
+.gate.finish .g-plaque{ background:linear-gradient(#3a2716, #1c120a); }
+.gate.finish.open .g-lock{ display:none; }
+
+/* hall title + signpost */
+.hall-title{ position:absolute; top:calc(var(--fl) * .2); transform:translateX(-50%); text-align:center; font-family:var(--f-display); color:var(--gold-3); text-shadow:0 0 24px rgba(240,190,90,.35); white-space:nowrap; pointer-events:none; }
+.hall-title small{ display:block; font-family:var(--f-body); font-size:12px; letter-spacing:.3em; color:var(--mute); font-weight:600; }
+.hall-title b{ display:block; font-size:clamp(22px, 3.4vw, 40px); font-weight:600; line-height:1.15; }
+.signpost{ position:absolute; top:calc(var(--fl) + 5%); transform:translate(-50%, -100%); display:flex; flex-direction:column; align-items:center; pointer-events:none; }
+.signpost span{ background:linear-gradient(#f3e6c8, #d9c69c); color:#2a1a12; font-weight:700; font-size:13px; padding:6px 12px; border-radius:4px; box-shadow:0 6px 14px rgba(0,0,0,.45); white-space:nowrap; display:flex; gap:6px; align-items:center; }
+.signpost span .i{ width:16px; height:16px; }
+.signpost i{ width:4px; height:46px; background:#5a3a22; }
+
+/* pillars (foreground) */
+.pillar{ position:absolute; bottom:0; height:100%; width:clamp(34px, 5vw, 72px); margin-left:calc(clamp(34px, 5vw, 72px) / -2); background:linear-gradient(90deg, #070403, #2b1a12 42%, #150c08 70%, #050302); box-shadow:0 0 40px rgba(0,0,0,.7); }
+.pillar::before, .pillar::after{ content:""; position:absolute; left:-6px; right:-6px; height:10px; background:linear-gradient(#c9a14e, #6b4a1f); }
+.pillar::before{ top:14%; } .pillar::after{ bottom:12%; }
+
+/* dust */
+.dust{ position:absolute; inset:0; z-index:7; pointer-events:none; }
+.dust i{ position:absolute; width:3px; height:3px; border-radius:50%; background:rgba(255,222,160,.7); opacity:0; animation:dust linear infinite; }
+
+/* student */
+.student{ position:absolute; z-index:5; top:calc(var(--fl) + 6.2%); aspect-ratio:120/220; transform:translate(-50%, -100%); transition:height .7s cubic-bezier(.3,.7,.2,1); pointer-events:none; }
+.student svg{ width:100%; height:100%; overflow:visible; display:block; }
+.student.face-left svg{ transform:scaleX(-1); }
+.s-leg, .s-arm, .s-head, .s-eye, .s-bob{ transform-box:view-box; }
+.s-leg-b{ transform-origin:56px 142px; } .s-leg-f{ transform-origin:64px 142px; }
+.s-arm-b{ transform-origin:56px 94px; } .s-arm-f{ transform-origin:64px 94px; }
+.s-head{ transform-origin:60px 80px; transition:transform .5s; }
+.s-eye{ transform-origin:75px 53px; animation:blink 4.6s infinite; }
+.s-bob{ animation:breathe 3.4s ease-in-out infinite; }
+.s-arm{ transition:transform .35s; }
+.student.walking .s-bob{ animation:bob .29s ease-in-out infinite alternate; }
+.student.walking .s-leg-f{ animation:stepA .58s ease-in-out infinite; }
+.student.walking .s-leg-b{ animation:stepB .58s ease-in-out infinite; }
+.student.walking .s-arm-f{ animation:swingB .58s ease-in-out infinite; }
+.student.walking .s-arm-b{ animation:swingA .58s ease-in-out infinite; }
+.student.look .s-head{ transform:rotate(-9deg); }
+.student.cheer .s-bob{ animation:jump .55s cubic-bezier(.3,.8,.4,1) 2; }
+.student.cheer .s-arm-f{ transform:rotate(-150deg); } .student.cheer .s-arm-b{ transform:rotate(-135deg); }
+.student.sad .s-head{ animation:shake .6s ease-in-out; transform:rotate(9deg); }
+.student.sad .s-arm-f{ transform:rotate(-30deg); }
+.student.entering{ animation:enterDoor .8s ease-in forwards; }
+.student.arrive{ animation:arrive .6s ease-out both; }
+.bubble{ position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); width:max-content; max-width:min(240px, 60vw); background:#f7efe0; color:#2a1a12; font-weight:600; font-size:14px; line-height:1.35; padding:8px 12px; border-radius:14px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,.45); }
+.bubble::after{ content:""; position:absolute; top:100%; left:50%; margin-left:-7px; border:7px solid transparent; border-top-color:#f7efe0; border-bottom:0; }
+.bubble.pop{ animation:pop .35s cubic-bezier(.2,1.5,.4,1) both; }
+
+/* HUD */
+.hud{ position:absolute; top:0; left:0; right:0; z-index:10; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:calc(10px + env(safe-area-inset-top,0px)) clamp(12px,3vw,28px) 10px; background:linear-gradient(180deg, rgba(8,5,4,.85), rgba(8,5,4,0)); }
+.brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+.brand .mark{ width:34px; height:34px; border-radius:50%; background:#140c09; border:1px solid var(--line); display:grid; place-items:center; color:var(--gold); flex:none; }
+.brand .mark svg{ width:28px; height:28px; }
+.brand span{ font-family:var(--f-display); font-weight:600; font-size:clamp(14px,1.8vw,18px); line-height:1.15; color:var(--ink); }
+.brand span em{ font-style:normal; color:var(--gold); }
+.hprog{ display:flex; align-items:center; gap:6px; flex:none; background:rgba(20,13,10,.8); border:1px solid var(--line); border-radius:999px; padding:6px 12px; }
+.hprog i{ width:12px; height:16px; border-radius:6px 6px 2px 2px; border:1.5px solid #6d5634; }
+.hprog i.on{ background:var(--gold); border-color:var(--gold); box-shadow:0 0 8px rgba(214,175,92,.6); }
+.hprog b{ font-size:13px; margin-left:4px; font-variant-numeric:tabular-nums; color:var(--ink); }
+.hback{ display:inline-flex; align-items:center; gap:6px; background:rgba(20,13,10,.8); border:1px solid var(--line); border-radius:999px; padding:8px 14px 8px 10px; cursor:pointer; font-weight:600; font-size:14px; flex:none; }
+.hback:hover{ border-color:var(--gold); color:var(--gold-3); }
+.hback .i{ width:17px; height:17px; }
+.htitle{ font-family:var(--f-display); font-weight:600; font-size:clamp(15px,2vw,20px); color:var(--gold-3); text-align:center; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hsteps{ display:flex; gap:5px; flex:none; }
+.hsteps i{ width:22px; height:6px; border-radius:6px; background:rgba(255,255,255,.14); }
+.hsteps i.on{ background:var(--gold); }
+.hsteps i.q{ width:12px; }
+@media (max-width: 560px){ .hback span{ display:none; } .hback{ padding:8px 10px; } .hsteps i{ width:12px; } .hsteps i.q{ width:8px; } .brand span{ font-size:13px; } .brand .mark{ width:30px; height:30px; } .brand .mark svg{ width:24px; height:24px; } .hprog{ gap:4px; padding:5px 9px; } .hprog i{ width:9px; height:13px; } .hprog b{ font-size:12px; } }
+
+/* panel */
+.panel{ position:absolute; z-index:10; left:50%; bottom:calc(12px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); width:min(860px, calc(100% - 20px)); max-height:calc(100% - var(--fl) - 9.5%); overflow:auto; overscroll-behavior:contain;
+  background:var(--glass); border:1px solid var(--line); border-radius:18px; box-shadow:0 22px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); padding:14px clamp(14px,2.4vw,22px); transition:max-height .9s cubic-bezier(.3,.7,.2,1), opacity .3s, transform .3s; }
+.panel.away{ opacity:0; transform:translateX(-50%) translateY(14px); pointer-events:none; }
+.panel .pin{ display:grid; gap:10px; animation:panelIn .35s ease both; }
+.p-head{ display:flex; align-items:center; gap:10px; min-width:0; }
+.p-ava{ width:34px; height:34px; border-radius:50%; flex:none; display:grid; place-items:center; background:#140c09; border:1px solid var(--line); color:var(--gold); }
+.p-ava svg{ width:26px; height:26px; }
+.p-who{ font-weight:700; font-size:13.5px; color:var(--gold-3); }
+.p-meta{ margin-left:auto; min-width:0; font-size:12.5px; color:var(--mute); display:flex; align-items:center; gap:8px; font-variant-numeric:tabular-nums; }
+.p-mt{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+.p-who{ white-space:nowrap; }
+.dots{ display:flex; gap:4px; }
+.dots i{ width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.18); }
+.dots i.on{ background:var(--gold); }
+.p-line{ font-family:var(--f-display); font-size:clamp(17px,2.1vw,21px); line-height:1.45; font-weight:500; color:#f6ecd8; min-height:1.45em; margin:0; }
+.p-line .typed::after{ content:""; }
+.p-cap{ font-size:14px; color:var(--mute); margin:0; }
+.p-title{ font-family:var(--f-display); font-weight:600; font-size:clamp(20px,2.6vw,26px); color:#f6ecd8; line-height:1.2; margin:0; }
+.p-sub{ color:var(--mute); font-size:14.5px; margin:0; }
+.p-actions{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; position:sticky; bottom:-14px; z-index:2; margin-bottom:-14px; padding:8px 0 14px; background:linear-gradient(rgba(17,11,9,0), #110b09 38%); }
+.p-actions .grow{ flex:1; }
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:10px 18px; border-radius:999px; border:1px solid transparent; font-weight:700; font-size:15px; line-height:1.2; cursor:pointer; transition:transform .15s, filter .2s, background .2s, border-color .2s, opacity .2s; }
+.btn:active{ transform:translateY(1px) scale(.98); }
+.btn .i{ width:18px; height:18px; }
+.btn-gold{ background:linear-gradient(180deg, #e7c26c, #c9a14e); color:#1a1008; box-shadow:0 6px 18px rgba(214,175,92,.25); }
+.btn-gold:hover{ filter:brightness(1.08); }
+.btn-line{ background:transparent; border-color:var(--line); color:var(--ink); }
+.btn-line:hover{ border-color:var(--gold); color:var(--gold-3); }
+.btn-round{ width:44px; padding:0; }
+.btn[disabled]{ opacity:.35; pointer-events:none; }
+.link{ background:none; border:0; padding:6px 4px; color:var(--mute); font-size:14px; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+.link:hover{ color:var(--gold-3); }
+.stars-row{ display:flex; gap:4px; align-items:center; }
+.stars-row svg{ width:18px; height:18px; fill:#4a3a28; }
+.stars-row svg.on{ fill:var(--gold); }
+.stars-row span{ font-size:13.5px; color:var(--mute); margin-left:6px; }
+
+/* visuals inside the panel */
+.v-triad{ display:flex; justify-content:center; padding:4px 0; }
+.v-triad span{ width:112px; height:112px; border-radius:50%; display:grid; place-items:center; text-align:center; font-weight:700; font-size:15px; border:1.5px solid var(--gold); background:rgba(214,175,92,.1); margin-left:-18px; animation:itemIn .5s both; animation-delay:calc(var(--i) * 120ms); }
+.v-triad span:first-child{ margin-left:0; }
+.v-flow{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+.v-flow div{ padding:12px; border-radius:12px; background:rgba(255,255,255,.06); font-weight:700; font-size:14.5px; line-height:1.35; display:grid; gap:4px; animation:itemIn .5s both; animation-delay:calc(var(--i) * 120ms); }
+.v-flow div b{ font-size:12px; color:#f09a82; font-weight:600; }
+.v-flow div:first-child{ background:rgba(184,50,42,.28); }
+.v-quote{ margin:0; padding:16px 18px; border-radius:12px; background:rgba(214,175,92,.08); border:1px solid rgba(214,175,92,.3); display:grid; gap:6px; animation:itemIn .5s both; }
+.v-quote q{ font-family:var(--f-display); font-style:italic; font-size:clamp(18px,2.2vw,22px); line-height:1.4; color:#f6e3b8; }
+.v-quote cite{ font-style:normal; font-size:13px; color:var(--gold); }
+.v-scale{ display:grid; gap:10px; }
+.v-scale .row{ display:grid; grid-template-columns:72px 1fr; gap:12px; align-items:start; animation:itemIn .5s both; animation-delay:calc(var(--i) * 140ms); }
+.v-scale .yr{ font-size:13px; color:var(--mute); text-align:right; font-weight:600; white-space:nowrap; }
+.v-scale .sc{ display:grid; gap:2px; min-width:0; }
+.v-scale .track{ display:block; height:10px; border-radius:10px; background:rgba(255,255,255,.08); margin-bottom:4px; overflow:hidden; }
+.v-scale .track i{ display:block; height:100%; border-radius:10px; background:#7fb069; transform-origin:0 50%; animation:grow .9s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(var(--i) * 140ms + .2s); }
+.v-scale .row:last-child .track i{ background:#e2685a; }
+.v-scale .sc-t{ display:flex; flex-wrap:wrap; align-items:baseline; gap:0 10px; }
+.v-scale .sc b{ font-size:15px; }
+.v-scale .sc small{ font-size:13px; color:var(--mute); font-style:italic; }
+.v-pair{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.v-pair div{ border:1px solid rgba(214,175,92,.3); border-radius:12px; padding:14px; display:grid; gap:4px; align-content:start; animation:itemIn .5s both; animation-delay:calc(var(--i) * 140ms); }
+.v-pair b{ font-family:var(--f-display); font-size:23px; font-weight:600; color:#f09a82; }
+.v-pair div:last-child b{ color:#8fd3bd; }
+.v-pair span{ font-size:14.5px; color:#dccfb9; }
+.v-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+.v-chips span{ padding:9px 14px; border-radius:999px; border:1.5px solid var(--gold); font-weight:700; font-size:14.5px; animation:itemIn .5s both; animation-delay:calc(var(--i) * 110ms); }
+.v-timeline{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); position:relative; }
+.v-timeline::before{ content:""; position:absolute; top:9px; left:12%; right:12%; height:2px; background:rgba(255,255,255,.16); }
+.v-timeline div{ display:grid; justify-items:center; text-align:center; gap:4px; position:relative; padding:0 4px; animation:itemIn .5s both; animation-delay:calc(var(--i) * 130ms); }
+.v-timeline i{ width:20px; height:20px; border-radius:50%; background:#1b120e; border:3px solid #e2685a; }
+.v-timeline b{ font-size:14px; color:var(--gold-3); }
+.v-timeline span{ font-size:13px; color:#dccfb9; line-height:1.35; }
+.v-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+.v-grid span{ padding:10px; border-radius:10px; background:rgba(255,255,255,.06); font-size:13.5px; font-weight:700; line-height:1.35; display:grid; gap:2px; animation:itemIn .45s both; animation-delay:calc(var(--i) * 80ms); }
+.v-grid span b{ font-size:12px; color:#8fd3bd; font-weight:600; }
+.v-list{ display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+.v-list li{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start; font-size:15.5px; animation:itemIn .45s both; animation-delay:calc(var(--i) * 120ms); }
+.v-list li::before{ content:""; width:8px; height:8px; margin-top:8px; border-radius:2px; background:#e2685a; transform:rotate(45deg); }
+.v-num{ display:grid; grid-template-columns:1fr 1fr; gap:7px 14px; margin:0; padding:0; list-style:none; }
+.v-list{ grid-template-columns:1fr 1fr; column-gap:18px; }
+.v-num li{ display:grid; grid-template-columns:32px 1fr; gap:10px; align-items:center; font-weight:700; font-size:15px; animation:itemIn .45s both; animation-delay:calc(var(--i) * 110ms); }
+.v-num li b{ width:32px; height:32px; border-radius:50%; display:grid; place-items:center; background:rgba(214,175,92,.14); border:1px solid var(--gold); color:var(--gold-3); font-family:var(--f-display); }
+@media (max-width: 620px){
+  .v-flow, .v-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .v-pair{ grid-template-columns:1fr; }
+  .v-num, .v-list{ grid-template-columns:1fr; }
+  .v-timeline{ grid-template-columns:1fr 1fr; row-gap:14px; }
+  .v-timeline::before{ display:none; }
+  .v-triad span{ width:90px; height:90px; font-size:13.5px; margin-left:-12px; }
+}
+
+/* quiz */
+.qtext{ font-weight:700; font-size:clamp(16.5px,2vw,19px); line-height:1.45; margin:0; }
+.post{ border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:12px 14px; display:grid; gap:6px; background:rgba(255,255,255,.04); }
+.post-head{ display:flex; gap:10px; align-items:center; }
+.avatar{ width:32px; height:32px; border-radius:50%; display:grid; place-items:center; color:#fff; font-weight:700; font-size:12px; flex:none; }
+.post-head b{ display:block; font-size:14px; line-height:1.2; }
+.post-head small{ color:var(--mute); font-size:12px; }
+.post p{ margin:0; font-size:15px; color:#e9dcc6; }
+.opts{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.opt{ display:grid; grid-template-columns:28px 1fr; gap:10px; align-items:start; text-align:left; padding:11px 13px; border:1px solid rgba(214,175,92,.28); border-radius:12px; background:rgba(255,255,255,.04); cursor:pointer; line-height:1.4; font-size:15px; transition:border-color .15s, background .15s, transform .15s; animation:itemIn .4s both; animation-delay:calc(var(--i) * 70ms); }
+.opt .lt{ width:28px; height:28px; border-radius:50%; border:1px solid rgba(214,175,92,.45); display:grid; place-items:center; font-weight:800; font-size:12.5px; color:var(--gold-3); }
+.opt:hover:not([disabled]){ border-color:var(--gold); background:rgba(214,175,92,.12); transform:translateY(-2px); }
+.opt[disabled]{ cursor:default; }
+.opt.right{ border-color:var(--ok); background:rgba(95,191,132,.18); }
+.opt.right .lt{ background:var(--ok); border-color:var(--ok); color:#0d1a12; }
+.opt.wrong{ border-color:var(--bad); background:rgba(226,104,90,.16); }
+.opt.wrong .lt{ border-color:var(--bad); color:var(--bad); }
+.opt.dim{ opacity:.45; }
+.fb{ display:grid; grid-template-columns:auto 1fr; gap:10px; padding:12px 14px; border-radius:12px; font-size:14.5px; line-height:1.5; animation:panelIn .3s both; }
+.fb .i{ width:20px; height:20px; margin-top:1px; }
+.fb.ok{ background:rgba(95,191,132,.14); } .fb.ok .i{ color:var(--ok); }
+.fb.no{ background:rgba(226,104,90,.14); } .fb.no .i{ color:var(--bad); }
+.fb b{ display:block; }
+@media (max-width: 620px){ .opts{ grid-template-columns:1fr; } }
+.result{ display:grid; justify-items:center; text-align:center; gap:10px; }
+.result .big-stars{ display:flex; gap:8px; }
+.result .big-stars svg{ width:44px; height:44px; fill:#4a3a28; }
+.result .big-stars svg.on{ fill:var(--gold); filter:drop-shadow(0 0 10px rgba(240,190,90,.5)); animation:starPop .6s cubic-bezier(.2,1.6,.4,1) both; }
+.result .big-stars svg.on:nth-child(2){ animation-delay:.15s; } .result .big-stars svg.on:nth-child(3){ animation-delay:.3s; } .result .big-stars svg.on:nth-child(4){ animation-delay:.45s; }
+.result .p-actions{ justify-content:center; }
+.review{ display:grid; gap:6px; width:100%; text-align:left; }
+.review div{ display:grid; grid-template-columns:auto 1fr; gap:8px; font-size:14px; padding:9px 11px; border-radius:10px; background:rgba(255,255,255,.05); }
+.review .i{ width:17px; height:17px; color:var(--bad); margin-top:2px; }
+
+/* room stations */
+.station{ position:absolute; top:calc(var(--fl) * .16 + 26px); width:var(--fw); transform:translateX(-50%); transition:width .7s; }
+.spot{ position:absolute; left:50%; bottom:0; width:calc(var(--fw) * 1.5); height:calc(var(--fh) + 200px); transform:translateX(-50%); background:linear-gradient(180deg, rgba(255,228,168,.3), rgba(255,228,168,.06) 75%, transparent); clip-path:polygon(42% 0, 58% 0, 100% 100%, 0 100%); opacity:0; transition:opacity .9s; pointer-events:none; }
+.station.lit .spot{ opacity:1; }
+.frame{ position:relative; height:var(--fh); padding:11px; border-radius:4px; background:linear-gradient(135deg, #f0d58c, #9c7427 35%, #f3dc98 55%, #8a651f); box-shadow:0 22px 44px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.3); filter:brightness(.5) saturate(.7); transition:filter .9s, height .7s; }
+.station.lit .frame{ filter:none; }
+.frame-in{ height:100%; display:grid; place-items:center; align-content:center; gap:8px; padding:12px; text-align:center; background:radial-gradient(ellipse at 50% 30%, #3b251b, #140c09 85%); box-shadow:inset 0 0 0 2px rgba(0,0,0,.45), inset 0 0 34px rgba(0,0,0,.8); overflow:hidden; }
+.tone-pt .frame-in{ background:radial-gradient(ellipse at 50% 30%, #1f3a31, #0a1310 85%); }
+.f-ico{ width:clamp(48px, calc(var(--fh) * .34), 110px); aspect-ratio:1; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle at 35% 30%, #f6de98, #b88a32 72%); color:#2a1a0e; box-shadow:0 0 34px rgba(240,190,90,.35); }
+.station.lit .f-ico{ animation:glow 2.6s ease-in-out infinite; }
+.f-ico .i{ width:50%; height:50%; stroke-width:1.6; }
+.f-title{ font-family:var(--f-display); font-weight:600; color:#f5e4bf; font-size:clamp(14px, calc(var(--fh) * .085), 26px); line-height:1.2; text-wrap:balance; }
+.f-no{ font-size:11px; letter-spacing:.22em; color:var(--mute); text-transform:uppercase; font-weight:600; }
+.f-seen{ position:absolute; top:-10px; right:-10px; width:30px; height:30px; border-radius:50%; background:var(--gold); color:#1a1008; display:grid; place-items:center; box-shadow:0 4px 10px rgba(0,0,0,.5); animation:pop .4s both; }
+.f-seen .i{ width:16px; height:16px; stroke-width:3; }
+.podium{ position:absolute; top:0; height:100%; width:var(--fw); transform:translateX(-50%); pointer-events:none; }
+.q-medal{ position:absolute; left:50%; top:calc(var(--fl) * .16 + 24px); width:clamp(70px, calc(var(--fh) * .5), 150px); aspect-ratio:1; transform:translateX(-50%); border-radius:50%; display:grid; place-items:center; font-family:var(--f-display); font-weight:700; font-size:clamp(40px, calc(var(--fh) * .3), 90px); color:#2a1a0e; background:radial-gradient(circle at 35% 30%, #f8e3a2, #b88a32 72%); box-shadow:0 0 60px rgba(240,190,90,.45); animation:float 3s ease-in-out infinite; transition:top .9s; }
+.q-medal.won{ animation:spin 1.2s ease-out, float 3s ease-in-out 1.2s infinite; }
+.q-medal svg{ width:55%; height:55%; fill:#2a1a0e; }
+.q-stars{ position:absolute; left:50%; top:calc(var(--fl) * .16 + 34px + clamp(70px, calc(var(--fh) * .5), 150px)); transform:translateX(-50%); display:flex; gap:6px; transition:top .9s; }
+.q-stars svg{ width:26px; height:26px; fill:rgba(255,255,255,.12); stroke:rgba(214,175,92,.5); stroke-width:1; }
+.q-stars svg.on{ fill:var(--gold); animation:starPop .6s cubic-bezier(.2,1.6,.4,1) both; }
+.lectern{ position:absolute; left:50%; top:calc(var(--fl) + 6.2%); width:calc(var(--sh) * .6); height:calc(var(--sh) * .62); transform:translate(-30%, -100%); }
+.lectern svg{ width:100%; height:100%; display:block; }
+
+/* burst, iris, intro, sheet */
+.burst{ position:absolute; inset:0; z-index:8; pointer-events:none; overflow:hidden; }
+.burst i{ position:absolute; width:8px; height:12px; border-radius:2px; animation:burst 1.2s cubic-bezier(.15,.7,.3,1) forwards; }
+.iris{ position:absolute; inset:0; z-index:30; pointer-events:none; clip-path:circle(0px at var(--ix,50%) var(--iy,50%));
+  background:radial-gradient(circle at var(--ix,50%) var(--iy,50%), #fff4d6 0%, #f3c46e 22%, #7a3a12 55%, #0d0807 100%); }
+.iris.cover{ clip-path:circle(150% at var(--ix,50%) var(--iy,50%)); transition:clip-path .75s cubic-bezier(.55,0,.75,.2); }
+.iris.fade{ opacity:0; transition:opacity .6s ease; }
+.iris.dark{ background:#0a0605; }
+.intro{ position:absolute; inset:0; z-index:40; display:grid; place-items:center; padding:20px; background:radial-gradient(ellipse at 50% 42%, rgba(40,19,13,.93), rgba(8,5,4,.98) 75%); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); transition:opacity .8s, visibility .8s; overflow:hidden; }
+.intro.hide{ opacity:0; visibility:hidden; }
+.intro canvas{ position:absolute; left:50%; top:46%; width:min(88vmin, 620px); aspect-ratio:1; transform:translate(-50%,-50%); opacity:.42; pointer-events:none; }
+.intro-card{ position:relative; display:grid; gap:14px; justify-items:center; text-align:center; max-width:560px; }
+.intro-card .kick{ font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); font-weight:700; }
+.intro-card h1{ margin:0; font-family:var(--f-display); font-weight:600; font-size:clamp(34px,6vw,64px); line-height:1.05; text-wrap:balance; }
+.intro-card h1 span{ display:block; color:var(--gold); }
+.intro-card p{ margin:0; color:#d9ccb6; font-size:17px; max-width:44ch; }
+.intro-card small{ color:var(--dim); font-size:13px; }
+.intro-card .btn{ min-height:52px; padding:12px 26px; font-size:16.5px; }
+.sheet{ position:absolute; inset:0; z-index:50; display:grid; place-items:center; padding:16px; background:rgba(0,0,0,.6); animation:fadeIn .25s both; }
+.sheet-card{ width:min(680px,100%); max-height:86%; overflow:auto; background:#1a110d; border:1px solid var(--line); border-radius:18px; padding:22px; display:grid; gap:12px; box-shadow:0 30px 80px rgba(0,0,0,.6); animation:panelIn .3s both; }
+.sheet-card h2{ margin:0; font-family:var(--f-display); font-weight:600; font-size:24px; color:#f6ecd8; }
+.sheet-card p{ margin:0; color:#dccfb9; }
+.sheet-card .remember{ padding:12px 14px; border-radius:12px; background:rgba(214,175,92,.1); color:#f3e2bd; }
+.sheet-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+
+@keyframes sway{ 0%,100%{ transform:rotate(2.2deg); } 50%{ transform:rotate(-2.2deg); } }
+@keyframes flicker{ 0%,100%{ opacity:1; } 45%{ opacity:.8; } 50%{ opacity:1; } 72%{ opacity:.88; } }
+@keyframes dust{ 0%{ opacity:0; transform:translate(0,0); } 20%{ opacity:.8; } 80%{ opacity:.5; } 100%{ opacity:0; transform:translate(var(--dx,20px), -140px); } }
+@keyframes breathe{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(1.2px); } }
+@keyframes bob{ from{ transform:translateY(0); } to{ transform:translateY(-4px); } }
+@keyframes stepA{ 0%,100%{ transform:rotate(24deg); } 50%{ transform:rotate(-24deg); } }
+@keyframes stepB{ 0%,100%{ transform:rotate(-24deg); } 50%{ transform:rotate(24deg); } }
+@keyframes swingA{ 0%,100%{ transform:rotate(26deg); } 50%{ transform:rotate(-26deg); } }
+@keyframes swingB{ 0%,100%{ transform:rotate(-26deg); } 50%{ transform:rotate(26deg); } }
+@keyframes blink{ 0%,93%,100%{ transform:scaleY(1); } 95%{ transform:scaleY(.1); } }
+@keyframes jump{ 0%,100%{ transform:translateY(0); } 40%{ transform:translateY(-26px); } }
+@keyframes shake{ 0%,100%{ transform:rotate(9deg); } 25%{ transform:rotate(2deg); } 50%{ transform:rotate(14deg); } 75%{ transform:rotate(4deg); } }
+@keyframes enterDoor{ from{ transform:translate(-50%,-100%) scale(1); opacity:1; } to{ transform:translate(-50%,-104%) scale(.72); opacity:0; } }
+@keyframes arrive{ from{ transform:translate(-50%,-104%) scale(.8); opacity:0; } to{ transform:translate(-50%,-100%) scale(1); opacity:1; } }
+@keyframes pop{ from{ transform:translateX(-50%) scale(.6); opacity:0; } to{ transform:translateX(-50%) scale(1); opacity:1; } }
+@keyframes starPop{ 0%{ transform:scale(.3); } 60%{ transform:scale(1.35); } 100%{ transform:scale(1); } }
+@keyframes panelIn{ from{ opacity:0; transform:translateY(8px); } }
+@keyframes itemIn{ from{ opacity:0; transform:translateY(10px) scale(.96); } }
+@keyframes grow{ from{ transform:scaleX(0); } }
+@keyframes glow{ 0%,100%{ box-shadow:0 0 30px rgba(240,190,90,.3); } 50%{ box-shadow:0 0 60px rgba(240,190,90,.6); } }
+@keyframes float{ 0%,100%{ transform:translateX(-50%) translateY(0); } 50%{ transform:translateX(-50%) translateY(-10px); } }
+@keyframes spin{ from{ transform:translateX(-50%) rotateY(0); } to{ transform:translateX(-50%) rotateY(720deg); } }
+@keyframes burst{ 0%{ opacity:1; transform:translate(0,0) rotate(0); } 100%{ opacity:0; transform:translate(var(--dx), var(--dy)) rotate(var(--r)); } }
+@keyframes fadeIn{ from{ opacity:0; } }
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+  .dust{ display:none; }
+}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><radialGradient id="lanternG" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#ffe6a8"/><stop offset=".45" stop-color="#f0873a"/><stop offset="1" stop-color="#a3241b"/></radialGradient></defs></svg>
+<div class="app" id="app">
+  <div class="scene m-corridor" id="scene">
+    <div class="floor-bg"></div>
+    <div class="world" id="world"></div>
+    <div class="student" id="student"><div id="stuSvg" style="width:100%;height:100%"></div><div class="bubble" id="bubble" hidden></div></div>
+    <div class="fg" id="fg"></div>
+    <div class="dust" id="dust"></div>
+    <div class="burst" id="burst"></div>
+    <div class="hud" id="hud"></div>
+    <div class="panel away" id="panel" aria-live="polite"></div>
+    <div class="iris" id="iris"></div>
+    <div class="intro" id="intro"></div>
+    <div class="sheet" id="sheet" hidden></div>
+  </div>
+</div>
+<script>
+/* ===== NỘI DUNG BẢO TÀNG (theo giáo trình Chương 6, Phần III và IV) ===== */
+
+const EXHIBITS = [
+  /* ---------------- PHÒNG 6.3 ---------------- */
+  {
+    id: "6.3-01", room: "6.3", pos: "w", icon: "users",
+    code: "HCM-6.3-01", title: "Quan niệm về con người", topic: "Quan niệm về con người",
+    look: "Con người là một chỉnh thể thống nhất về trí lực, tâm lực, thể lực, luôn gắn với các quan hệ xã hội.",
+    visual: { type: "triad", items: ["Trí lực", "Tâm lực", "Thể lực"] },
+    learn: [
+      "Theo Hồ Chí Minh, con người là một <strong>chỉnh thể</strong>, thống nhất về trí lực, tâm lực, thể lực, đa dạng trong mối quan hệ giữa cá nhân và xã hội (gia đình, dòng tộc, làng xã, giai cấp, dân tộc) và các quan hệ chính trị, văn hóa, đạo đức, tôn giáo. Trong mỗi con người đều có tính tốt và tính xấu.",
+      "Người giải thích: chữ “người”, nghĩa hẹp là gia đình, anh em, họ hàng, bè bạn; nghĩa rộng là đồng bào cả nước; rộng hơn nữa là cả loài người. Người cũng chú ý yếu tố sinh vật: “dân dĩ thực vi thiên”, dân chỉ biết rõ giá trị của tự do, độc lập khi được ăn no, mặc đủ.",
+      "Nét đặc sắc: Hồ Chí Minh không nhìn con người trừu tượng mà nhìn con người <strong>lịch sử – cụ thể</strong> (giới tính, lứa tuổi, nghề nghiệp, vị trí…), gắn với điều kiện kinh tế – xã hội cụ thể của Việt Nam."
+    ],
+    keywords: ["Chỉnh thể", "Cá nhân – xã hội", "Lịch sử – cụ thể"],
+    remember: "Con người có ba chiều quan hệ: với cộng đồng xã hội (là thành viên), với chế độ xã hội (làm chủ hay bị áp bức), với tự nhiên (một bộ phận không tách rời).",
+    q: {
+      id: "ex-6.3-01",
+      text: "Hồ Chí Minh nhìn nhận con người như thế nào?",
+      options: [
+        "Con người trừu tượng, không gắn với hoàn cảnh lịch sử",
+        "Một chỉnh thể thống nhất về trí lực, tâm lực, thể lực, gắn với các quan hệ xã hội",
+        "Chủ yếu là một thực thể sinh vật",
+        "Những cá nhân riêng lẻ, tách biệt khỏi cộng đồng"
+      ],
+      answer: 1,
+      explain: "Hồ Chí Minh nhìn con người là một chỉnh thể và là con người lịch sử – cụ thể, luôn nằm trong các mối quan hệ với cộng đồng, chế độ xã hội và tự nhiên."
+    }
+  },
+  {
+    id: "6.3-02", room: "6.3", pos: "n", icon: "target",
+    code: "HCM-6.3-02", title: "Con người là mục tiêu", topic: "Vai trò của con người: mục tiêu của cách mạng",
+    look: "Con người là “chiến lược đầu tiên” trong tư tưởng và hành động của Hồ Chí Minh. Cách mạng hướng tới bốn sự giải phóng.",
+    visual: { type: "flow", items: ["Giải phóng dân tộc", "Giải phóng xã hội", "Giải phóng giai cấp", "Giải phóng con người"] },
+    learn: [
+      "Mục tiêu vì con người được cụ thể hóa qua ba giai đoạn cách mạng: giải phóng dân tộc, xây dựng chế độ dân chủ nhân dân, tiến dần lên chủ nghĩa xã hội.",
+      "<strong>Giải phóng dân tộc</strong>: xóa ách thống trị của chủ nghĩa đế quốc; con người ở đây là cả cộng đồng dân tộc. <strong>Giải phóng xã hội</strong>: xây dựng xã hội không còn người bóc lột người, mọi người làm chủ, ấm no, tự do, hạnh phúc. <strong>Giải phóng giai cấp</strong>: xóa bỏ áp bức, bất công, trước hết vì công nhân và nông dân. <strong>Giải phóng con người</strong>: xóa bỏ những điều kiện làm tha hóa con người để <em>mỗi cá nhân</em> phát triển toàn diện.",
+      "Các sự giải phóng gắn bó chặt chẽ và nối tiếp nhau: giải phóng dân tộc mở đường cho giải phóng xã hội, giải phóng giai cấp và giải phóng con người."
+    ],
+    keywords: ["Mục tiêu", "Bốn sự giải phóng", "Phát triển toàn diện"],
+    remember: "Giải phóng dân tộc là bước mở đường. Con người trong “giải phóng con người” là cá nhân mỗi con người; phạm vi thế giới là giải phóng loài người.",
+    q: {
+      id: "ex-6.3-02",
+      text: "Trong “giải phóng con người”, đối tượng được giải phóng là ai?",
+      options: ["Cả cộng đồng dân tộc", "Các giai cấp cần lao", "Cá nhân mỗi con người", "Chỉ các dân tộc thuộc địa"],
+      answer: 2,
+      explain: "Theo giáo trình, con người trong giải phóng con người là cá nhân mỗi con người; ở phạm vi thế giới là giải phóng loài người."
+    }
+  },
+  {
+    id: "6.3-03", room: "6.3", pos: "e", icon: "zap",
+    code: "HCM-6.3-03", title: "Con người là động lực", topic: "Vai trò của con người: động lực của cách mạng",
+    look: "Con người là vốn quý nhất, là động lực và nhân tố quyết định thành công của cách mạng.",
+    visual: { type: "quote", text: "Dễ trăm lần không dân cũng chịu, khó vạn lần dân liệu cũng xong.", by: "Hồ Chí Minh" },
+    learn: [
+      "Hồ Chí Minh nhấn mạnh “mọi việc đều do người làm ra”; “trong bầu trời không gì quý bằng nhân dân. Trong thế giới không gì mạnh bằng sức mạnh đoàn kết của nhân dân”.",
+      "Cách mạng là sự nghiệp của quần chúng. Nhân dân là người sáng tạo chân chính ra lịch sử thông qua lao động sản xuất, đấu tranh chính trị – xã hội và sáng tạo các giá trị văn hóa.",
+      "Nói đến nhân dân là nói đến <strong>lực lượng, trí tuệ, quyền hành, lòng tốt, niềm tin</strong>. Đó chính là gốc, là động lực của cách mạng."
+    ],
+    keywords: ["Vốn quý nhất", "Nhân dân", "Sức mạnh đoàn kết"],
+    remember: "Con người vừa là MỤC TIÊU vừa là ĐỘNG LỰC của cách mạng. Hai mặt này thống nhất với nhau.",
+    q: {
+      id: "ex-6.3-03",
+      text: "Theo tư tưởng Hồ Chí Minh, con người giữ vị trí như thế nào đối với cách mạng?",
+      options: ["Chỉ là mục tiêu", "Chỉ là động lực", "Vừa là mục tiêu, vừa là động lực", "Là đối tượng thụ động"],
+      answer: 2,
+      explain: "Con người là mục tiêu (cách mạng để giải phóng con người) và cũng là động lực (mọi việc đều do người làm ra)."
+    }
+  },
+  {
+    id: "6.3-04", room: "6.3", pos: "s", icon: "sprout",
+    code: "HCM-6.3-04", title: "“Trồng người”", topic: "Ý nghĩa của việc xây dựng con người",
+    look: "Vì lợi ích mười năm thì phải trồng cây, vì lợi ích trăm năm thì phải trồng người.",
+    visual: { type: "scale", items: [["1 năm", "Trồng lúa", "Nhất niên chi kế mạc như thụ cốc"], ["10 năm", "Trồng cây", "Thập niên chi kế mạc như thụ mộc"], ["100 năm", "Trồng người", "Bách niên chi kế mạc như thụ nhân"]] },
+    learn: [
+      "Xây dựng con người là yêu cầu khách quan của sự nghiệp cách mạng, <strong>vừa cấp bách vừa lâu dài</strong>, có ý nghĩa chiến lược và là bộ phận hợp thành của chiến lược phát triển đất nước.",
+      "“Trồng người” là công việc lâu dài, gian khổ, là công việc của văn hóa giáo dục. Nó phải được tiến hành thường xuyên suốt tiến trình đi lên chủ nghĩa xã hội, song song với phát triển lực lượng sản xuất và quan hệ sản xuất, và bền bỉ trong suốt cuộc đời mỗi người, vừa là quyền lợi vừa là trách nhiệm.",
+      "Đây là trách nhiệm của Đảng, Nhà nước, các đoàn thể, kết hợp với tính tích cực, chủ động của từng người. Tư tưởng này kế thừa lời của Quản Trọng thời Xuân Thu."
+    ],
+    keywords: ["Trồng người", "Chiến lược lâu dài", "Văn hóa giáo dục"],
+    remember: "“Muốn xây dựng chủ nghĩa xã hội, trước hết cần phải có những con người xã hội chủ nghĩa.” Việc này đặt ra ngay từ đầu, không chờ kinh tế phát triển cao.",
+    q: {
+      id: "ex-6.3-04",
+      text: "“Trồng người” theo Hồ Chí Minh là công việc như thế nào?",
+      options: [
+        "Ngắn hạn, làm một lần là xong",
+        "Chỉ là trách nhiệm của nhà trường",
+        "Lâu dài, gian khổ, thường xuyên; là trách nhiệm của Đảng, Nhà nước, đoàn thể kết hợp với tính tích cực của mỗi người",
+        "Chỉ bắt đầu khi kinh tế đã phát triển cao"
+      ],
+      answer: 2,
+      explain: "“Trồng người” là công việc lâu dài, gian khổ, tiến hành bền bỉ suốt đời mỗi người và suốt tiến trình đi lên chủ nghĩa xã hội."
+    }
+  },
+  {
+    id: "6.3-05", room: "6.3", pos: "sw", icon: "compass",
+    code: "HCM-6.3-05", title: "Vừa “hồng” vừa “chuyên”", topic: "Nội dung xây dựng con người",
+    look: "Xây dựng con người toàn diện, có cả phẩm chất (“hồng”) lẫn năng lực (“chuyên”).",
+    visual: { type: "pair", items: [["Hồng", "Lý tưởng, bản lĩnh chính trị, đạo đức, lối sống xã hội chủ nghĩa"], ["Chuyên", "Trí tuệ, lý luận, văn hóa, khoa học – kỹ thuật, chuyên môn, ngoại ngữ, sức khỏe"]] },
+    learn: [
+      "Hồ Chí Minh quan tâm xây dựng con người toàn diện: có mục đích và lối sống cao đẹp, bản lĩnh chính trị vững vàng, có tư tưởng, tác phong, đạo đức xã hội chủ nghĩa và năng lực làm chủ.",
+      "Những khía cạnh chủ yếu: có ý thức làm chủ, tinh thần tập thể, tư tưởng <strong>“mình vì mọi người, mọi người vì mình”</strong>; cần kiệm xây dựng đất nước, hăng hái bảo vệ Tổ quốc; lòng yêu nước nồng nàn, tinh thần quốc tế trong sáng; phương pháp làm việc khoa học, phong cách quần chúng, dân chủ, nêu gương.",
+      "Người đặc biệt chú trọng nâng cao đạo đức cách mạng, quét sạch chủ nghĩa cá nhân."
+    ],
+    keywords: ["Hồng", "Chuyên", "Toàn diện"],
+    remember: "Đức và tài phải thống nhất; trong đó đức là gốc.",
+    q: {
+      id: "ex-6.3-05",
+      text: "Tư tưởng nào thuộc nội dung xây dựng con người theo Hồ Chí Minh?",
+      options: ["“Mình vì mọi người, mọi người vì mình”", "“Mỗi người vì mình trước tiên”", "“Dĩ hòa vi quý”", "“Chỉ cần giỏi chuyên môn là đủ”"],
+      answer: 0,
+      explain: "Ý thức làm chủ, tinh thần tập thể và tư tưởng “mình vì mọi người, mọi người vì mình” là một khía cạnh của con người toàn diện."
+    }
+  },
+  {
+    id: "6.3-06", room: "6.3", pos: "se", icon: "book",
+    code: "HCM-6.3-06", title: "Phương pháp xây dựng con người", topic: "Phương pháp xây dựng con người",
+    look: "Tự tu dưỡng, nêu gương, giáo dục, và dựa vào tổ chức, phong trào quần chúng.",
+    visual: { type: "chips", items: ["Tự rèn luyện, tu dưỡng", "Nêu gương", "Giáo dục", "Tổ chức và phong trào"] },
+    learn: [
+      "Mỗi người tự rèn luyện, tu dưỡng ý thức, kết hợp với xây dựng cơ chế, tính khoa học của bộ máy và nền dân chủ. <strong>Nêu gương</strong>, nhất là của người đứng đầu, rất quan trọng: “tu thân, chính tâm” thì mới “trị quốc, bình thiên hạ”; “một tấm gương sống có giá trị hơn một trăm bài diễn văn tuyên truyền”.",
+      "<strong>Giáo dục</strong> giữ vị trí quan trọng: “Hiền, dữ phải đâu là tính sẵn, phần nhiều do giáo dục mà nên”. Trẻ em như tờ giấy trắng, vẽ xanh thì xanh, vẽ đỏ thì đỏ.",
+      "Phát huy vai trò của Đảng, chính quyền, đoàn thể qua các phong trào “Thi đua yêu nước”, “Người tốt việc tốt”, và “dựa vào ý kiến của dân chúng mà sửa chữa cán bộ và tổ chức”."
+    ],
+    keywords: ["Tu dưỡng", "Nêu gương", "Giáo dục"],
+    remember: "“Lấy gương người tốt, việc tốt hằng ngày để giáo dục lẫn nhau.”",
+    q: {
+      id: "ex-6.3-06",
+      text: "Câu “Hiền, dữ phải đâu là tính sẵn, phần nhiều do giáo dục mà nên” nhấn mạnh phương pháp nào?",
+      options: ["Nêu gương", "Giáo dục", "Xây dựng cơ chế", "Phong trào thi đua"],
+      answer: 1,
+      explain: "Câu thơ khẳng định nhân cách chủ yếu được hình thành qua giáo dục, vì vậy giáo dục có vị trí rất quan trọng."
+    }
+  },
+
+  /* ---------------- PHÒNG 6.4 ---------------- */
+  {
+    id: "6.4-01", room: "6.4", pos: "n", icon: "flag", place: "Quảng trường",
+    code: "HCM-6.4-01", title: "Bức tranh hôm nay", topic: "Thực trạng văn hóa, đạo đức, con người",
+    look: "Sau 35 năm đổi mới, đất nước đạt nhiều kết quả, nhưng việc xây dựng văn hóa, đạo đức, con người còn nhiều khuyết điểm.",
+    visual: { type: "list", items: ["Văn hóa chưa được quan tâm tương xứng với kinh tế và chính trị", "Còn coi trọng chức năng giải trí đơn thuần", "Môi trường văn hóa bị ô nhiễm bởi tệ nạn, tham nhũng, tiêu cực", "Chênh lệch hưởng thụ văn hóa giữa các vùng, miền còn lớn"] },
+    learn: [
+      "Đại hội XIII của Đảng chỉ rõ: văn hóa chưa được quan tâm tương xứng với kinh tế và chính trị, chưa thật sự trở thành <strong>nguồn lực, động lực nội sinh</strong> của sự phát triển bền vững. Vai trò của văn hóa trong xây dựng con người chưa được xác định đúng tầm.",
+      "Môi trường văn hóa, xã hội tiếp tục bị ô nhiễm bởi các tệ nạn xã hội, tham nhũng, tiêu cực. Đời sống văn hóa ở vùng đồng bào dân tộc thiểu số, vùng sâu, vùng xa còn nhiều khó khăn.",
+      "Tình trạng suy thoái về tư tưởng chính trị, đạo đức, lối sống trong Đảng và trong xã hội có chiều hướng gia tăng. Vì vậy phải chú trọng hơn nữa việc xây dựng văn hóa, đạo đức, con người."
+    ],
+    keywords: ["Đại hội XIII", "Động lực nội sinh", "Suy thoái"],
+    remember: "Mục tiêu: văn hóa phải trở thành nguồn lực, động lực nội sinh của sự phát triển bền vững đất nước.",
+    q: {
+      id: "ex-6.4-01",
+      text: "Theo Đại hội XIII, một hạn chế của văn hóa hiện nay là gì?",
+      options: [
+        "Văn hóa được đầu tư vượt xa kinh tế",
+        "Văn hóa chưa được quan tâm tương xứng với kinh tế và chính trị",
+        "Không còn chênh lệch hưởng thụ văn hóa giữa các vùng",
+        "Văn hóa chỉ còn chức năng giáo dục"
+      ],
+      answer: 1,
+      explain: "Đại hội XIII nhận định văn hóa chưa được quan tâm tương xứng với kinh tế và chính trị, chưa thật sự trở thành nguồn lực, động lực nội sinh."
+    }
+  },
+  {
+    id: "6.4-02", room: "6.4", pos: "nw", icon: "landmark", place: "Nhà Văn hóa",
+    code: "HCM-6.4-02", title: "Văn hóa, nền tảng tinh thần", topic: "Xây dựng và phát triển văn hóa",
+    look: "Văn hóa là nền tảng tinh thần của xã hội, vừa là mục tiêu vừa là động lực thúc đẩy phát triển kinh tế – xã hội.",
+    visual: { type: "timeline", items: [["1998", "Nghị quyết Trung ương 5 khóa VIII"], ["2011", "Cương lĩnh (bổ sung, phát triển)"], ["2014", "Nghị quyết 33-NQ/TW"], ["XIII", "Đại hội đại biểu toàn quốc lần thứ XIII"]] },
+    learn: [
+      "Nghị quyết Trung ương 5 khóa VIII (7/1998) nêu các quan điểm chỉ đạo: văn hóa là nền tảng tinh thần của xã hội, vừa là mục tiêu vừa là động lực; xây dựng nền văn hóa <strong>tiên tiến, đậm đà bản sắc dân tộc</strong>, thống nhất mà đa dạng; là sự nghiệp của toàn dân do Đảng lãnh đạo, trong đó đội ngũ trí thức giữ vai trò quan trọng; văn hóa là một mặt trận; là sự nghiệp cách mạng lâu dài.",
+      "Cương lĩnh 2011 khẳng định xây dựng nền văn hóa phát triển toàn diện, thống nhất trong đa dạng, thấm nhuần tinh thần nhân văn, dân chủ, tiến bộ; thấm sâu vào toàn bộ đời sống xã hội, trở thành sức mạnh nội sinh quan trọng của phát triển.",
+      "“Văn hóa còn thì chế độ còn, văn hóa mất thì chế độ mất.” Cần tập trung xây dựng văn hóa chính trị và các lĩnh vực như văn hóa bổn phận, văn hóa công bộc, văn hóa ứng xử, văn hóa phê bình."
+    ],
+    keywords: ["Tiên tiến", "Đậm đà bản sắc", "Thống nhất trong đa dạng"],
+    remember: "Nghị quyết Trung ương 5 khóa VIII (1998): xây dựng và phát triển nền văn hóa Việt Nam tiên tiến, đậm đà bản sắc dân tộc.",
+    q: {
+      id: "ex-6.4-02",
+      text: "Nghị quyết Trung ương 5 khóa VIII (1998) xác định nền văn hóa Việt Nam cần xây dựng là nền văn hóa như thế nào?",
+      options: ["Hiện đại, hội nhập hoàn toàn", "Tiên tiến, đậm đà bản sắc dân tộc", "Truyền thống, khép kín", "Đại chúng, thiên về giải trí"],
+      answer: 1,
+      explain: "Nghị quyết Trung ương 5 khóa VIII bàn về xây dựng và phát triển nền văn hóa Việt Nam tiên tiến, đậm đà bản sắc dân tộc."
+    }
+  },
+  {
+    id: "6.4-03", room: "6.4", pos: "ne", icon: "school", place: "Trường học",
+    code: "HCM-6.4-03", title: "Con người, trung tâm của phát triển", topic: "Xây dựng con người Việt Nam hiện nay",
+    look: "Con người là trung tâm của chiến lược phát triển, đồng thời là chủ thể phát triển (Cương lĩnh 2011).",
+    visual: { type: "pair", items: [["Trung tâm", "Mọi chiến lược phát triển đều hướng tới con người"], ["Chủ thể", "Con người là lực lượng trực tiếp tạo ra sự phát triển"]] },
+    learn: [
+      "Hội nghị Trung ương 5 khóa VIII nêu hệ giá trị con người Việt Nam thời kỳ công nghiệp hóa, hiện đại hóa: yêu nước, tự cường dân tộc; ý thức tập thể, đoàn kết; lối sống lành mạnh, cần kiệm, trung thực, nhân nghĩa, tôn trọng kỷ cương phép nước; lao động chăm chỉ, sáng tạo; thường xuyên học tập, nâng cao trình độ, thẩm mỹ và thể lực.",
+      "Cương lĩnh 2011 khẳng định con người là trung tâm của chiến lược phát triển, đồng thời là chủ thể phát triển; tôn trọng và bảo vệ quyền con người.",
+      "Nghị quyết 33-NQ/TW (9/6/2014) và Đại hội XIII định hướng <strong>phát triển con người toàn diện</strong>, để văn hóa, con người Việt Nam trở thành sức mạnh nội sinh, động lực phát triển đất nước. Cùng với đó là đổi mới căn bản, toàn diện giáo dục và đào tạo, trọng dụng trí thức, nhân tài."
+    ],
+    keywords: ["Trung tâm", "Chủ thể", "Phát triển toàn diện"],
+    remember: "Nghị quyết 33-NQ/TW (2014): xây dựng và phát triển văn hóa, con người Việt Nam đáp ứng yêu cầu phát triển bền vững đất nước.",
+    q: {
+      id: "ex-6.4-03",
+      text: "Theo Cương lĩnh năm 2011, con người giữ vị trí nào trong chiến lược phát triển?",
+      options: [
+        "Là phương tiện của tăng trưởng kinh tế",
+        "Là trung tâm của chiến lược phát triển, đồng thời là chủ thể phát triển",
+        "Là đối tượng quản lý của Nhà nước",
+        "Là yếu tố phụ trợ cho khoa học – công nghệ"
+      ],
+      answer: 1,
+      explain: "Cương lĩnh 2011: “Con người là trung tâm của chiến lược phát triển, đồng thời là chủ thể phát triển.”"
+    },
+    situation: {
+      id: "tt-truong",
+      text: "Một sinh viên có thành tích học tập rất tốt nhưng thường xuyên gian lận trong thi cử. Theo tư tưởng Hồ Chí Minh, vấn đề nằm ở đâu?",
+      options: [
+        "Không có vấn đề, vì kết quả học tập vẫn cao",
+        "Thiếu tài, cần học thêm chuyên môn",
+        "Có tài nhưng thiếu đức, mà đức là gốc; thiếu đạo đức thì tài cũng vô dụng, thậm chí có hại",
+        "Do đề thi quá khó"
+      ],
+      answer: 2,
+      explain: "“Dạy cũng như học phải biết chú trọng cả tài lẫn đức. Đức là đạo đức cách mạng. Đó là cái gốc, rất quan trọng. Nếu không có đạo đức cách mạng thì có tài cũng vô dụng.”"
+    }
+  },
+  {
+    id: "6.4-04", room: "6.4", pos: "e", icon: "home", place: "Khu dân cư",
+    code: "HCM-6.4-04", title: "Môi trường văn hóa lành mạnh", topic: "Nhiệm vụ xây dựng văn hóa, con người (Đại hội XII)",
+    look: "Đại hội XII nêu tám nhiệm vụ cụ thể, từ con người, gia đình đến báo chí, công nghiệp văn hóa và hội nhập.",
+    visual: { type: "grid", items: ["Con người phát triển toàn diện", "Môi trường văn hóa lành mạnh", "Văn hóa trong chính trị và kinh tế", "Nâng chất lượng hoạt động văn hóa", "Quản lý báo chí, xuất bản", "Phát triển công nghiệp văn hóa", "Chủ động hội nhập quốc tế về văn hóa", "Đổi mới lãnh đạo, quản lý văn hóa"] },
+    learn: [
+      "<strong>Xây dựng con người phát triển toàn diện</strong> là mục tiêu của chiến lược phát triển: nhân cách, đạo đức, trí tuệ, năng lực sáng tạo, thể chất, tâm hồn, trách nhiệm xã hội, nghĩa vụ công dân, ý thức tuân thủ pháp luật; đấu tranh đẩy lùi cái xấu, cái ác, thấp hèn, lạc hậu.",
+      "<strong>Xây dựng môi trường văn hóa lành mạnh</strong>, phù hợp với kinh tế thị trường định hướng xã hội chủ nghĩa và hội nhập quốc tế; thực hiện chiến lược phát triển gia đình Việt Nam no ấm, tiến bộ, hạnh phúc, văn minh.",
+      "<strong>Xây dựng văn hóa trong chính trị và kinh tế</strong>: chăm lo văn hóa trong Đảng, cơ quan nhà nước và đoàn thể, coi đây là nhân tố để xây dựng hệ thống chính trị trong sạch, vững mạnh."
+    ],
+    keywords: ["Môi trường văn hóa", "Gia đình", "Công nghiệp văn hóa"],
+    remember: "Gia đình no ấm, tiến bộ, hạnh phúc, văn minh là nền tảng của môi trường văn hóa lành mạnh.",
+    q: {
+      id: "ex-6.4-04",
+      text: "Nhiệm vụ nào KHÔNG nằm trong các nhiệm vụ xây dựng văn hóa, con người mà Đại hội XII nêu ra?",
+      options: [
+        "Phát triển công nghiệp văn hóa",
+        "Chủ động hội nhập quốc tế về văn hóa",
+        "Hạn chế tiếp thu văn hóa nước ngoài để giữ bản sắc",
+        "Xây dựng văn hóa trong chính trị và kinh tế"
+      ],
+      answer: 2,
+      explain: "Đại hội XII yêu cầu chủ động hội nhập quốc tế về văn hóa, tiếp thu tinh hoa văn hóa nhân loại, chứ không hạn chế tiếp thu."
+    }
+  },
+  {
+    id: "6.4-05", room: "6.4", pos: "sw", icon: "award", place: "Nhà truyền thống",
+    code: "HCM-6.4-05", title: "Vì sao học tập đạo đức Hồ Chí Minh?", topic: "Xây dựng đạo đức cách mạng",
+    look: "Đạo đức Hồ Chí Minh là đạo đức của bậc “đại nhân, đại trí, đại dũng”, đồng thời gần gũi để ai cũng có thể học tập và làm theo.",
+    visual: { type: "quote", text: "Học để làm gì? Học để phục vụ ai?", by: "Hồ Chí Minh nói với thanh niên trí thức" },
+    learn: [
+      "Hồ Chí Minh là tấm gương sáng, hiện thân của nền đạo đức cách mạng Việt Nam. Đạo đức là yếu tố cơ bản của nhân cách, nên ai cũng phải tu dưỡng. Người mong muốn “thanh niên phải có đức, có tài”, vì thanh niên là “người chủ tương lai của nước nhà”.",
+      "Hiện nay, phần lớn sinh viên vẫn giữ lối sống nhân hậu, trong sạch, năng động, có chí lập thân, lập nghiệp. Song một bộ phận phai nhạt niềm tin, lý tưởng, chạy theo lối sống thực dụng, thiếu trách nhiệm, thờ ơ với gia đình và xã hội; giáo dục “làm người” còn bị xem nhẹ.",
+      "Vì vậy cần đẩy mạnh học tập và làm theo tư tưởng, đạo đức Hồ Chí Minh, để mỗi người trở thành công dân tốt hơn, biết trọng danh dự, lương tâm, trách nhiệm."
+    ],
+    keywords: ["Đại nhân, đại trí, đại dũng", "Thanh niên", "Chí lập thân"],
+    remember: "“Nước nhà thịnh hay suy, yếu hay mạnh một phần lớn là do các thanh niên.”",
+    q: {
+      id: "ex-6.4-05",
+      text: "Theo Hồ Chí Minh, thanh niên trí thức cần trả lời dứt khoát hai câu hỏi nào?",
+      options: ["Học ở đâu? Học với ai?", "Học để làm gì? Học để phục vụ ai?", "Học bao lâu? Học bao nhiêu?", "Học cái gì? Thi như thế nào?"],
+      answer: 1,
+      explain: "Người nói với thanh niên trí thức: “Học để làm gì? Học để phục vụ ai? Đó là hai câu hỏi cần phải trả lời dứt khoát.”"
+    }
+  },
+  {
+    id: "6.4-06", room: "6.4", pos: "se", icon: "star", place: "Nhà Thanh niên",
+    code: "HCM-6.4-06", title: "Năm bài học đạo đức", topic: "Học tập và làm theo đạo đức Hồ Chí Minh",
+    look: "Học tập đạo đức Hồ Chí Minh là học năm phẩm chất lớn, bắt đầu từ việc tu dưỡng hằng ngày.",
+    visual: { type: "numbered", items: ["Trung với nước, hiếu với dân", "Cần, kiệm, liêm, chính, chí công vô tư; khiêm tốn, trung thực, trách nhiệm", "Tin vào sức mạnh nhân dân, nhân ái, khoan dung", "Ý chí, nghị lực vượt mọi thử thách", "Yêu nước kết hợp tinh thần quốc tế trong sáng"] },
+    learn: [
+      "<strong>Trung với nước, hiếu với dân</strong>, suốt đời đấu tranh cho cách mạng: “giàu sang không thể quyến rũ, nghèo khó không thể chuyển lay, uy lực không thể khuất phục”. <strong>Cần, kiệm, liêm, chính, chí công vô tư</strong>; “trau dồi đạo đức cách mạng, trước hết là đức khiêm tốn”; trung thực gắn với trách nhiệm.",
+      "<strong>Tin và kính trọng nhân dân</strong>: việc gì có lợi cho dân, dù nhỏ cũng hết sức làm; việc gì có hại cho dân, dù nhỏ cũng hết sức tránh. Sau Cách mạng Tháng Tám, Người cùng nhân dân nhịn ăn góp gạo cứu đói; đi thăm trại tù binh về, Người đã cho viên sĩ quan thầy thuốc Pháp bị rét chiếc áo khoác của mình.",
+      "<strong>Ý chí, nghị lực</strong>: “Muốn nên sự nghiệp lớn, tinh thần càng phải cao”. Và <strong>yêu nước chân chính kết hợp tinh thần quốc tế trong sáng</strong>."
+    ],
+    keywords: ["Trung – hiếu", "Cần kiệm liêm chính", "Khiêm tốn", "Trách nhiệm"],
+    remember: "“Đạo đức cách mạng không phải trên trời sa xuống… Cũng như ngọc càng mài càng sáng, vàng càng luyện càng trong.”",
+    q: {
+      id: "ex-6.4-06",
+      text: "Theo Hồ Chí Minh, muốn hoàn thành nhiệm vụ tốt thì phải trau dồi đạo đức cách mạng, trước hết là đức tính nào?",
+      options: ["Khiêm tốn", "Quyết đoán", "Nhanh nhẹn", "Cứng rắn"],
+      answer: 0,
+      explain: "“Muốn hoàn thành nhiệm vụ được tốt thì… phải trau dồi đạo đức cách mạng, trước hết là đức khiêm tốn.”"
+    }
+  }
+];
+
+/* ---------- MẠNG XÃ HỘI (phòng 6.4) ---------- */
+const POSTS = [
+  {
+    id: "post-1", name: "Minh Anh", handle: "@minhanh.k19", time: "2 giờ", hue: 12, likes: 128, comments: 34,
+    text: "Hôm nay thi cuối kỳ, thấy bạn cùng bàn quay cóp mà mình không nói gì vì sợ mất lòng. Thôi kệ, chuyện của nó.",
+    question: "Cách ứng xử này liên quan đến vấn đề nào?",
+    options: [
+      "Thiếu trung thực và trách nhiệm; kiểu “dĩ hòa vi quý” mà Hồ Chí Minh phê phán",
+      "Tôn trọng quyền riêng tư của bạn bè",
+      "Biểu hiện của tình thương yêu con người",
+      "Không liên quan đến đạo đức, chỉ là chuyện thi cử"
+    ],
+    answer: 0,
+    explain: "Theo Hồ Chí Minh, thương yêu con người là “nâng con người lên”, kể cả người nhất thời lầm lạc, chứ không phải thái độ “dĩ hòa vi quý”. Trung thực gắn với trách nhiệm, và xây phải đi đôi với chống. Cách phù hợp là góp ý chân thành để bạn sửa sai."
+  },
+  {
+    id: "post-2", name: "Tin Nóng 24h", handle: "@tinnong.24h", time: "35 phút", hue: 200, likes: 2400, comments: 512,
+    text: "NÓNG!!! Nghe nói trường X sắp cho nghỉ học cả tháng. Chưa kiểm chứng nhưng cứ share cho mọi người biết nha!!!",
+    question: "Việc chia sẻ thông tin chưa kiểm chứng liên quan đến nhiệm vụ nào hiện nay?",
+    options: [
+      "Quyền tự do cá nhân, không cần bàn",
+      "Xây dựng môi trường văn hóa lành mạnh, văn hóa ứng xử và trách nhiệm công dân trên không gian mạng",
+      "Phát triển công nghiệp giải trí",
+      "Chỉ là vấn đề kỹ thuật của mạng xã hội"
+    ],
+    answer: 1,
+    explain: "Cương lĩnh 2011 đòi hỏi thông tin chân thực. Đại hội XII yêu cầu xây dựng môi trường văn hóa lành mạnh, đề cao trách nhiệm xã hội và nghĩa vụ công dân. Văn hóa ứng xử là một lĩnh vực văn hóa cần tập trung xây dựng. Kiểm chứng trước khi chia sẻ là trách nhiệm của mỗi người."
+  },
+  {
+    id: "post-3", name: "CLB Mùa hè xanh", handle: "@muahexanh", time: "1 ngày", hue: 140, likes: 856, comments: 97,
+    text: "Cuối tuần này team mình lên bản dạy chữ và tặng sách cho các em vùng cao. Còn 5 suất tình nguyện viên, ai đi cùng không?",
+    question: "Hoạt động này thể hiện giá trị nào theo tư tưởng Hồ Chí Minh?",
+    options: [
+      "Chỉ là hoạt động giải trí cuối tuần",
+      "Tinh thần “trồng người”, thương yêu con người và trách nhiệm xã hội",
+      "Phô trương hình thức để lấy thành tích",
+      "Việc riêng của nhà trường, không liên quan sinh viên"
+    ],
+    answer: 1,
+    explain: "“Trồng người” là công việc của văn hóa giáo dục, là trách nhiệm chung kết hợp với tính tích cực của từng người. Đại hội XIII chỉ ra chênh lệch hưởng thụ văn hóa giữa các vùng, miền còn lớn. Góp sức thu hẹp khoảng cách ấy là cách thực hành lòng thương yêu con người."
+  },
+  {
+    id: "post-4", name: "Flex mỗi ngày", handle: "@life.is.flex", time: "3 giờ", hue: 280, likes: 1320, comments: 210,
+    text: "Lương làm thêm tháng này “đốt” hết vào đồ hiệu để lên hình cho sang. Học hành tính sau, sống là phải chất!",
+    question: "Theo tư tưởng Hồ Chí Minh, lối sống này cần được nhìn nhận thế nào?",
+    options: [
+      "Là biểu hiện năng động, bản lĩnh của giới trẻ",
+      "Là lối sống thực dụng, trái với đức “kiệm”; cần xác định lại “Học để làm gì?”",
+      "Là chuyện cá nhân, xã hội không cần quan tâm",
+      "Là biểu hiện của tinh thần quốc tế"
+    ],
+    answer: 1,
+    explain: "“Kiệm” là không xa xỉ, không hoang phí, không phô trương hình thức. Giáo trình chỉ ra một bộ phận sinh viên chạy theo lối sống thực dụng, phai nhạt lý tưởng. Hồ Chí Minh yêu cầu thanh niên trả lời dứt khoát: “Học để làm gì? Học để phục vụ ai?”"
+  }
+];
+
+/* ---------- KIỂM TRA CUỐI PHÒNG ---------- */
+const QUIZZES = {
+  "6.3": [
+    { id: "q63-1", text: "Theo Hồ Chí Minh, chữ “người” theo nghĩa rộng hơn cả là gì?", options: ["Gia đình, anh em, họ hàng", "Bè bạn, đồng chí", "Đồng bào cả nước", "Cả loài người"], answer: 3, explain: "Nghĩa hẹp là gia đình, anh em, họ hàng, bè bạn; nghĩa rộng là đồng bào cả nước; rộng hơn nữa là cả loài người." },
+    { id: "q63-2", text: "Câu “Bách niên chi kế mạc như thụ nhân” mà Hồ Chí Minh kế thừa là lời của ai?", options: ["Khổng Tử", "Quản Trọng", "Mạnh Tử", "Nguyễn Trãi"], answer: 1, explain: "Đây là lời của Quản Trọng thời Xuân Thu: kế hoạch trăm năm không gì bằng trồng người." },
+    { id: "q63-3", text: "Sự giải phóng nào mở đường cho các sự giải phóng còn lại?", options: ["Giải phóng dân tộc", "Giải phóng giai cấp", "Giải phóng xã hội", "Giải phóng con người"], answer: 0, explain: "Giải phóng dân tộc mở đường cho giải phóng xã hội, giải phóng giai cấp và giải phóng con người." },
+    { id: "q63-4", text: "“Dân dĩ thực vi thiên” cho thấy Hồ Chí Minh chú ý tới yếu tố nào của con người?", options: ["Yếu tố tâm linh", "Yếu tố sinh vật: nhu cầu ăn, mặc, ở", "Yếu tố thẩm mỹ", "Yếu tố quốc tế"], answer: 1, explain: "Người chỉ ra yếu tố sinh vật của con người: dân chỉ biết rõ giá trị của tự do, độc lập khi được ăn no, mặc đủ." },
+    { id: "q63-5", text: "Về quan hệ giữa xây dựng con người xã hội chủ nghĩa và xây dựng chủ nghĩa xã hội, quan điểm nào đúng?", options: ["Chờ kinh tế phát triển cao rồi mới xây dựng con người", "Xây dựng xong con người rồi mới xây dựng chủ nghĩa xã hội", "Đặt ra ngay từ đầu và quan tâm suốt tiến trình xây dựng chủ nghĩa xã hội", "Chỉ cần tập trung phát triển kinh tế"], answer: 2, explain: "Việc xây dựng con người xã hội chủ nghĩa được đặt ra ngay từ đầu và phải được quan tâm trong suốt tiến trình." },
+    { id: "q63-6", text: "Muốn củng cố và mở rộng một phong trào cách mạng, theo Hồ Chí Minh cần làm gì?", options: ["Loại bỏ số chậm tiến", "Chỉ tập trung vào số tiên tiến", "Nâng cao giác ngộ của số trung gian để kéo số chậm tiến", "Chờ phong trào tự phát triển"], answer: 2, explain: "“Tiên tiến là số ít và số đông là trung gian… cần phải nâng cao hơn nữa trình độ giác ngộ của trung gian để kéo chậm tiến.”" }
+  ],
+  "6.4": [
+    { id: "q64-1", text: "Nghị quyết Trung ương 5 khóa VIII về xây dựng nền văn hóa tiên tiến, đậm đà bản sắc dân tộc được ban hành năm nào?", options: ["1986", "1998", "2011", "2014"], answer: 1, explain: "Nghị quyết Hội nghị Trung ương 5 khóa VIII được ban hành tháng 7/1998." },
+    { id: "q64-2", text: "Nghị quyết 33-NQ/TW (9/6/2014) bàn về vấn đề gì?", options: ["Phát triển kinh tế tư nhân", "Xây dựng và phát triển văn hóa, con người Việt Nam đáp ứng yêu cầu phát triển bền vững đất nước", "Đổi mới hệ thống chính trị", "Chiến lược quốc phòng"], answer: 1, explain: "Nghị quyết 33-NQ/TW của Hội nghị Trung ương 9 khóa XI bàn về xây dựng và phát triển văn hóa, con người Việt Nam." },
+    { id: "q64-3", text: "Theo Nghị quyết Trung ương 5 khóa VIII, trong sự nghiệp xây dựng văn hóa, lực lượng nào giữ vai trò quan trọng?", options: ["Đội ngũ trí thức", "Doanh nghiệp nước ngoài", "Các nghệ sĩ nổi tiếng", "Chỉ riêng ngành văn hóa"], answer: 0, explain: "Xây dựng văn hóa là sự nghiệp của toàn dân do Đảng lãnh đạo, trong đó đội ngũ trí thức giữ vai trò quan trọng." },
+    { id: "q64-4", text: "Hồ Chí Minh cho rằng “nước nhà thịnh hay suy, yếu hay mạnh một phần lớn là do…”", options: ["các nhà khoa học", "các doanh nhân", "các thanh niên", "các nước bạn"], answer: 2, explain: "Thanh niên là “người chủ tương lai của nước nhà… nước nhà thịnh hay suy, yếu hay mạnh một phần lớn là do các thanh niên”." },
+    { id: "q64-5", text: "Câu “giàu sang không thể quyến rũ, nghèo khó không thể chuyển lay, uy lực không thể khuất phục” gắn với bài học nào?", options: ["Trung với nước, hiếu với dân, kiên định mục tiêu cách mạng", "Tinh thần quốc tế trong sáng", "Văn hóa ứng xử nơi công cộng", "Phát triển công nghiệp văn hóa"], answer: 0, explain: "Đây là biểu hiện của phẩm chất trung với nước, hiếu với dân, trọn đời kiên định vì mục tiêu cách mạng." },
+    { id: "q64-6", text: "Biểu hiện nào là mặt tiêu cực của một bộ phận sinh viên mà giáo trình chỉ ra?", options: ["Có chí lập thân, lập nghiệp", "Năng động, nhạy bén, dám chịu trách nhiệm", "Phai nhạt lý tưởng, chạy theo lối sống thực dụng", "Gắn bó với nhân dân, đồng hành cùng dân tộc"], answer: 2, explain: "Giáo trình chỉ ra một bộ phận sinh viên phai nhạt niềm tin, lý tưởng, chạy theo lối sống thực dụng, thiếu trách nhiệm." }
+  ]
+};
+
+
+(function(){
+'use strict';
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const RM = () => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
+const wait = ms => new Promise(r => setTimeout(r, RM() ? Math.min(ms, 60) : ms));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+/* ---------------- icons ---------------- */
+const ICONS = {
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  zap: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
+  sprout: '<path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/>',
+  compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+  book: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
+  landmark: '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+  school: '<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+  home: '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  award: '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+  star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  help: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+  lock: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  arrowL: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  arrowR: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  checkCircle: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+  xCircle: '<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>',
+  check: '<polyline points="20 6 9 17 4 12"/>',
+  rotate: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'
+};
+const icon = (n, cls) => '<svg class="i' + (cls ? ' ' + cls : '') + '" viewBox="0 0 24 24" aria-hidden="true">' + (ICONS[n] || '') + '</svg>';
+const STAR_P = '<path d="M12 2.4l2.95 6.1 6.7.8-4.95 4.6 1.3 6.6L12 17.2l-6 3.3 1.3-6.6-4.95-4.6 6.7-.8z"/>';
+const stars = (on, total) => { let h = ''; for (let i = 0; i < total; i++) h += '<svg viewBox="0 0 24 24" class="' + (i < on ? 'on' : '') + '" aria-hidden="true">' + STAR_P + '</svg>'; return h; };
+function starPts(n, ro, ri, c){ const p = []; for (let i = 0; i < n * 2; i++){ const a = -Math.PI / 2 + i * Math.PI / n, r = i % 2 ? ri : ro; p.push((c + Math.cos(a) * r).toFixed(2) + ',' + (c + Math.sin(a) * r).toFixed(2)); } return p.join(' '); }
+const MARK = '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.4" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="20" cy="20" r="15" fill="none" stroke="currentColor" stroke-width=".9" stroke-dasharray="1 1.5"/><circle cx="20" cy="20" r="11.6" fill="none" stroke="currentColor" stroke-width=".8"/><polygon points="' + starPts(14, 9.6, 3.3, 20) + '" fill="currentColor"/></svg>';
+const LANTERN = '<svg viewBox="0 0 44 64" aria-hidden="true"><rect x="15" y="0" width="14" height="6" rx="2" fill="#c9a14e"/><ellipse cx="22" cy="30" rx="20" ry="22" fill="url(#lanternG)"/><path d="M22 8v44M13 11q-7 19 0 38M31 11q7 19 0 38" stroke="#8e1f15" stroke-width="1.4" fill="none" opacity=".6"/><rect x="15" y="50" width="14" height="6" rx="2" fill="#c9a14e"/><path d="M22 56v8" stroke="#c9a14e" stroke-width="2"/></svg>';
+const LECTERN = '<svg viewBox="0 0 60 64" aria-hidden="true"><path d="M5 7 L55 7 L50 19 L10 19 Z" fill="#8a4a24"/><rect x="4" y="3" width="52" height="6" rx="2" fill="#c9a14e"/><path d="M18 19 L42 19 L40 58 L20 58 Z" fill="#5a2c16"/><rect x="11" y="57" width="38" height="7" rx="2" fill="#3a1d0f"/><circle cx="30" cy="36" r="6.5" fill="none" stroke="#c9a14e" stroke-width="1.6"/></svg>';
+const STUDENT = '<svg viewBox="0 0 120 220" aria-hidden="true">' +
+  '<ellipse cx="60" cy="214" rx="27" ry="5" fill="rgba(0,0,0,.5)"/>' +
+  '<g class="s-bob">' +
+  '<g class="s-arm s-arm-b"><path d="M56 94 L54 128" stroke="#cfc8ba" stroke-width="11" stroke-linecap="round"/><circle cx="54" cy="133" r="5.8" fill="#dca981"/></g>' +
+  '<g class="s-leg s-leg-b"><path d="M56 140 L56 196" stroke="#1d212b" stroke-width="14" stroke-linecap="round"/><path d="M48 202 q0 -7 8 -7 h7 q12 0 14 9 v4 h-29 z" fill="#0f1115"/></g>' +
+  '<g class="s-leg s-leg-f"><path d="M64 140 L64 196" stroke="#2b3242" stroke-width="14" stroke-linecap="round"/><path d="M56 202 q0 -7 8 -7 h7 q12 0 14 9 v4 h-29 z" fill="#15171c"/></g>' +
+  '<path d="M31 90 q-6 0 -6 8 v30 q0 9 9 9 h14 v-47 z" fill="#a8261c"/><rect x="27" y="112" width="18" height="17" rx="5" fill="#8a1f17"/>' +
+  '<path d="M42 90 C 44 82 76 82 78 90 L 80 140 C 70 146 50 146 40 140 Z" fill="#f6f3ec"/>' +
+  '<path d="M42 90 L 40 140 C 43 141.5 46 142.5 49 143 L 50 86 C 46 86.5 43 88 42 90 Z" fill="#e3ddd0"/>' +
+  '<path d="M40 136 C 50 142 70 142 80 136 L 80 146 C 70 150 50 150 40 146 Z" fill="#1d212b"/>' +
+  '<path d="M47 90 C 51 104 51 118 47 132" stroke="#7d1c15" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+  '<rect x="55" y="72" width="11" height="15" rx="4" fill="#dca981"/>' +
+  '<path d="M52 85 L60 95 L68 85" fill="#ffffff" stroke="#d6cfc2" stroke-width="1.4" stroke-linejoin="round"/>' +
+  '<circle cx="61" cy="106" r="1.3" fill="#c9c1b3"/><circle cx="61" cy="118" r="1.3" fill="#c9c1b3"/><circle cx="61" cy="130" r="1.3" fill="#c9c1b3"/>' +
+  '<rect x="67" y="100" width="8" height="6" rx="1.2" fill="#b8322a"/>' +
+  '<g class="s-head">' +
+  '<circle cx="62" cy="50" r="26" fill="#f2c6a0"/><ellipse cx="53" cy="55" rx="4.6" ry="6" fill="#e5b088"/>' +
+  '<path d="M35 57 C 30 31 46 20 64 21 C 83 22 93 34 89 47 C 84 42 78 41 72 43 C 70 37 62 34 56 38 C 52 44 47 48 45 58 C 43 63 38 63 35 57 Z" fill="#1d1714"/>' +
+  '<path d="M50 28 C 58 24 68 24 75 27" stroke="#3b2e27" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+  '<path d="M71 45.5 q4.5 -2.2 9 0" stroke="#1d1714" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+  '<ellipse class="s-eye" cx="75" cy="53" rx="2.8" ry="3.8" fill="#1a1411"/><circle cx="76" cy="51.6" r=".95" fill="#fff"/>' +
+  '<ellipse cx="72" cy="62" rx="4.6" ry="3" fill="#ef8d7c" opacity=".45"/>' +
+  '<path d="M78 65 q3.5 2.6 7 -.5" stroke="#8a3b2c" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+  '<path d="M87.6 51.5 q2.4 2.8 .2 5.4" stroke="#d99f79" stroke-width="1.8" fill="none" stroke-linecap="round"/>' +
+  '</g>' +
+  '<g class="s-arm s-arm-f"><path d="M64 94 L66 128" stroke="#d3ccbe" stroke-width="13" stroke-linecap="round"/><path d="M64 94 L66 128" stroke="#f6f3ec" stroke-width="10.4" stroke-linecap="round"/><circle cx="66" cy="133" r="6" fill="#f2c6a0"/></g>' +
+  '</g></svg>';
+
+/* ---------------- content ---------------- */
+const ROOMS = [
+  { id: 'con-nguoi', name: 'Con người là gì?', sub: 'Quan niệm, mục tiêu và động lực', icon: 'users', tone: 'lq', ex: ['6.3-01', '6.3-02', '6.3-03'], qs: ['ex-6.3-01', 'ex-6.3-02', 'ex-6.3-03', 'q63-3'] },
+  { id: 'trong-nguoi', name: 'Trồng người', sub: 'Vì sao, xây dựng gì và bằng cách nào', icon: 'sprout', tone: 'lq', ex: ['6.3-04', '6.3-05', '6.3-06'], qs: ['ex-6.3-04', 'ex-6.3-05', 'ex-6.3-06', 'q63-2'] },
+  { id: 'van-hoa', name: 'Văn hóa hôm nay', sub: 'Thực trạng và nền tảng tinh thần', icon: 'landmark', tone: 'pt', ex: ['6.4-01', '6.4-02'], qs: ['ex-6.4-01', 'ex-6.4-02', 'q64-1', 'post-2'] },
+  { id: 'con-nguoi-moi', name: 'Con người Việt Nam mới', sub: 'Trung tâm của phát triển', icon: 'school', tone: 'pt', ex: ['6.4-03', '6.4-04'], qs: ['ex-6.4-03', 'ex-6.4-04', 'q64-2', 'tt-truong'] },
+  { id: 'dao-duc', name: 'Đạo đức cách mạng', sub: 'Học tập và làm theo Bác', icon: 'award', tone: 'pt', ex: ['6.4-05', '6.4-06'], qs: ['ex-6.4-05', 'ex-6.4-06', 'q64-4', 'post-1'] }
+];
+const LINES = {
+  '6.3-01': ['Theo Hồ Chí Minh, con người là một chỉnh thể thống nhất.', 'V:Ba mặt không tách rời nhau:', 'Con người luôn gắn với gia đình, làng xã, dân tộc. Ai cũng có tính tốt và tính xấu.', 'Chữ “người”: nghĩa hẹp là gia đình, bè bạn; nghĩa rộng là đồng bào cả nước; rộng hơn nữa là cả loài người.'],
+  '6.3-02': ['Con người là “chiến lược đầu tiên” trong tư tưởng và hành động của Hồ Chí Minh.', 'V:Cách mạng hướng tới bốn sự giải phóng:', 'Giải phóng dân tộc đi trước, mở đường cho các sự giải phóng còn lại.', 'Đích cuối cùng là mỗi con người được tự do, hạnh phúc, phát triển toàn diện.'],
+  '6.3-03': ['Con người là vốn quý nhất, là động lực của cách mạng.', 'V:Hồ Chí Minh khẳng định:', '“Mọi việc đều do người làm ra.” Nhân dân là người sáng tạo chân chính ra lịch sử.', 'Vậy con người vừa là mục tiêu, vừa là động lực của cách mạng.'],
+  '6.3-04': ['“Vì lợi ích mười năm thì phải trồng cây, vì lợi ích trăm năm thì phải trồng người.”', 'V:Kế hoạch càng dài, việc cần làm càng lớn:', 'Xây dựng con người vừa cấp bách vừa lâu dài, là công việc của văn hóa giáo dục.', 'Đó là trách nhiệm của Đảng, Nhà nước, đoàn thể và của chính mỗi người.'],
+  '6.3-05': ['Con người cần xây dựng là con người toàn diện, vừa “hồng” vừa “chuyên”.', 'V:Hai mặt phải đi cùng nhau:', 'Có ý thức làm chủ, sống theo tinh thần “mình vì mọi người, mọi người vì mình”.', 'Trong đó đức là gốc; phải quét sạch chủ nghĩa cá nhân.'],
+  '6.3-06': ['Muốn xây dựng con người, Hồ Chí Minh dùng bốn cách.', 'V:Bốn phương pháp:', '“Một tấm gương sống có giá trị hơn một trăm bài diễn văn tuyên truyền.”', '“Hiền, dữ phải đâu là tính sẵn, phần nhiều do giáo dục mà nên.”'],
+  '6.4-01': ['Sau 35 năm đổi mới, đất nước đạt nhiều kết quả, nhưng văn hóa, đạo đức, con người vẫn còn khuyết điểm.', 'V:Đại hội XIII chỉ ra:', 'Suy thoái về tư tưởng chính trị, đạo đức, lối sống có chiều hướng gia tăng.', 'Vì vậy phải chú trọng hơn nữa việc xây dựng văn hóa, đạo đức, con người.'],
+  '6.4-02': ['Văn hóa là nền tảng tinh thần của xã hội, vừa là mục tiêu vừa là động lực phát triển.', 'V:Những văn kiện quan trọng:', 'Nghị quyết Trung ương 5 khóa VIII (1998): xây dựng nền văn hóa tiên tiến, đậm đà bản sắc dân tộc.', '“Văn hóa còn thì chế độ còn, văn hóa mất thì chế độ mất.”'],
+  '6.4-03': ['Cương lĩnh 2011: con người là trung tâm của chiến lược phát triển, đồng thời là chủ thể phát triển.', 'V:Hai vai trò của con người:', 'Con người Việt Nam cần yêu nước, đoàn kết, trung thực, cần kiệm, sáng tạo và ham học hỏi.', 'Nghị quyết 33-NQ/TW (2014) hướng tới phát triển con người toàn diện.'],
+  '6.4-04': ['Đại hội XII nêu tám nhiệm vụ xây dựng văn hóa, con người.', 'V:Tám nhiệm vụ:', 'Trọng tâm là con người phát triển toàn diện và môi trường văn hóa lành mạnh.', 'Gia đình no ấm, tiến bộ, hạnh phúc, văn minh là nền tảng của môi trường ấy.'],
+  '6.4-05': ['Đạo đức Hồ Chí Minh vĩ đại mà gần gũi: ai cũng có thể học tập và làm theo.', 'V:Câu hỏi Người đặt ra cho thanh niên trí thức:', 'Thanh niên là “người chủ tương lai của nước nhà”, cần có cả đức lẫn tài.', 'Một bộ phận sinh viên còn sống thực dụng, phai nhạt lý tưởng, nên càng cần học tập đạo đức Hồ Chí Minh.'],
+  '6.4-06': ['Học tập đạo đức Hồ Chí Minh là học năm phẩm chất lớn.', 'V:Năm bài học:', 'Việc gì có lợi cho dân, dù nhỏ cũng hết sức làm; việc gì có hại cho dân, dù nhỏ cũng hết sức tránh.', '“Ngọc càng mài càng sáng, vàng càng luyện càng trong.”']
+};
+const EX = {}; EXHIBITS.forEach(e => { EX[e.id] = e; });
+const Q = {};
+EXHIBITS.forEach(e => { Q[e.q.id] = e.q; if (e.situation) Q[e.situation.id] = e.situation; });
+QUIZZES['6.3'].concat(QUIZZES['6.4']).forEach(q => { Q[q.id] = q; });
+POSTS.forEach(p => { Q[p.id] = { id: p.id, text: p.question, options: p.options, answer: p.answer, explain: p.explain, post: p }; });
+const N = ROOMS.length, TOTAL_Q = ROOMS.reduce((a, r) => a + r.qs.length, 0);
+
+/* ---------------- save ---------------- */
+const KEY = 'hcm-museum-v3';
+let SAVE = { best: {}, pos: 0 };
+try { const raw = localStorage.getItem(KEY); if (raw){ const d = JSON.parse(raw); if (d && d.best) SAVE = { best: d.best, pos: +d.pos || 0 }; } } catch (e) {}
+const store = () => { try { localStorage.setItem(KEY, JSON.stringify(SAVE)); } catch (e) {} };
+const isDone = id => SAVE.best[id] != null;
+const doneN = () => ROOMS.filter(r => isDone(r.id)).length;
+const totalBest = () => ROOMS.reduce((a, r) => a + (SAVE.best[r.id] || 0), 0);
+const firstUndone = () => { const i = ROOMS.findIndex(r => !isDone(r.id)); return i < 0 ? N + 1 : i + 1; };
+
+/* ---------------- dom + state ---------------- */
+const scene = $('#scene'), world = $('#world'), fg = $('#fg'), stu = $('#student'), bubble = $('#bubble'), hud = $('#hud'), panel = $('#panel'), iris = $('#iris'), intro = $('#intro'), sheet = $('#sheet'), burstBox = $('#burst');
+$('#stuSvg').innerHTML = STUDENT;
+const G = { mode: 'corridor', pos: clamp(SAVE.pos, 0, N + 1), room: null, st: 0, line: 0, qi: 0, picks: [], phase: 'exhibit', busy: false, x: 0, sx: 0, started: false, justDone: false };
+let W = 0, H = 0, M = {};
+
+function measure(){
+  W = scene.clientWidth; H = scene.clientHeight;
+  const mob = W < 700;
+  if (G.mode === 'corridor'){
+    const fl = mob ? .56 : .64, wall = H * fl;
+    const gh = clamp((wall - 58 - 72) * .86, 120, 380), gw = gh * .6;
+    const S = Math.max(clamp(W * .8, 300, 660), gw + 150);
+    M = { fl, gh, gw, S, sh: clamp(gh * .6, 90, 230), sx: W / 2, fw: 0, fh: 0 };
+  } else {
+    const flE = mob ? .48 : .56, wallE = H * flE, top = wallE * .16 + 26;
+    let fh = clamp(wallE - top - 18, 110, 400);
+    const fw = clamp(Math.min(W * .44, fh * 1.45), 180, 560);
+    fh = Math.min(fh, fw * .8);
+    const shE = clamp(wallE * .46, 88, 210), d = fw / 2 + shE * .36 + 14;
+    const S = Math.max(W * .92, fw + 2 * d + 60);
+    const quiz = G.phase !== 'exhibit', fl = quiz ? (mob ? .40 : .50) : flE;
+    const sh = quiz ? clamp(H * fl * .5, 84, 200) : shE, dq = sh * .62;
+    const gh = clamp((wallE - 58 - 70) * .8, 110, 300), gw = gh * .6;
+    const sx = quiz ? (mob ? W * .6 : W * .55) - dq : (mob ? Math.max(sh * .3 + 8, W * .62 - d) : W * .58 - d);
+    M = { fl, fh, fw, sh, d, dq, S, gh, gw, sx };
+  }
+  const st = scene.style;
+  st.setProperty('--S', M.S + 'px'); st.setProperty('--gh', M.gh + 'px'); st.setProperty('--gw', M.gw + 'px');
+  st.setProperty('--fw', M.fw + 'px'); st.setProperty('--fh', M.fh + 'px'); st.setProperty('--sh', M.sh + 'px');
+  stu.style.height = M.sh + 'px';
+}
+function xFor(){
+  if (G.mode === 'corridor') return G.pos * M.S;
+  const m = G.room.ex.length;
+  if (G.st === 0) return 0;
+  if (G.st <= m) return G.st * M.S - M.d;
+  return (m + 1) * M.S - M.dq;
+}
+function applyCam(){
+  world.style.transform = 'translate3d(' + (G.sx - G.x).toFixed(1) + 'px,0,0)';
+  fg.style.transform = 'translate3d(' + (G.sx - G.x * 1.35).toFixed(1) + 'px,0,0)';
+  stu.style.left = G.sx.toFixed(1) + 'px';
+}
+function setModeClass(){
+  scene.classList.remove('m-corridor', 'm-exhibit', 'm-quiz', 'tone-pt');
+  if (G.mode === 'corridor') scene.classList.add('m-corridor');
+  else { scene.classList.add(G.phase === 'exhibit' ? 'm-exhibit' : 'm-quiz'); if (G.room.tone === 'pt') scene.classList.add('tone-pt'); }
+}
+let raf = 0;
+function tween(toX, toSx, dur){
+  return new Promise(res => {
+    cancelAnimationFrame(raf);
+    const fx = G.x, fs = G.sx;
+    if (RM() || dur <= 0){ G.x = toX; G.sx = toSx; applyCam(); res(); return; }
+    const t0 = performance.now();
+    const step = now => {
+      const t = Math.min(1, (now - t0) / dur), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      G.x = fx + (toX - fx) * e; G.sx = fs + (toSx - fs) * e; applyCam();
+      if (t < 1) raf = requestAnimationFrame(step); else res();
+    };
+    raf = requestAnimationFrame(step);
+  });
+}
+function face(dir){ stu.classList.toggle('face-left', dir < 0); }
+async function walkTo(toX){
+  const dx = toX - G.x;
+  if (Math.abs(dx) < 2){ G.x = toX; applyCam(); return; }
+  face(dx);
+  stu.classList.remove('look'); stu.classList.add('walking');
+  await tween(toX, M.sx, clamp(Math.abs(dx) / .5, 520, 2800));
+  stu.classList.remove('walking');
+}
+let sayT = 0;
+function say(text, ms){
+  bubble.textContent = text; bubble.hidden = false;
+  bubble.classList.remove('pop'); void bubble.offsetWidth; bubble.classList.add('pop');
+  clearTimeout(sayT); sayT = setTimeout(() => { bubble.hidden = true; }, ms || 2200);
+}
+const hush = () => { clearTimeout(sayT); bubble.hidden = true; };
+function pose(name, ms){ stu.classList.add(name); setTimeout(() => stu.classList.remove(name), ms); }
+const panelAway = () => panel.classList.add('away');
+const panelBack = () => panel.classList.remove('away');
+
+function burstAt(x, y, count){
+  if (RM()) return;
+  const cols = ['#f0d58c', '#d6af5c', '#e2685a', '#fff4d6', '#8fd3bd'];
+  for (let i = 0; i < (count || 26); i++){
+    const s = document.createElement('i'), a = Math.random() * Math.PI * 2, v = 60 + Math.random() * 140;
+    s.style.left = x + 'px'; s.style.top = y + 'px'; s.style.background = cols[i % cols.length];
+    s.style.setProperty('--dx', (Math.cos(a) * v).toFixed(0) + 'px');
+    s.style.setProperty('--dy', (Math.sin(a) * v + 70).toFixed(0) + 'px');
+    s.style.setProperty('--r', (Math.random() * 720 - 360).toFixed(0) + 'deg');
+    burstBox.appendChild(s); setTimeout(() => s.remove(), 1300);
+  }
+}
+function burstEl(el, count){ const s = scene.getBoundingClientRect(), r = el.getBoundingClientRect(); burstAt(r.left + r.width / 2 - s.left, r.top + r.height / 2 - s.top, count); }
+function irisCover(x, y, dark){
+  iris.style.setProperty('--ix', x + 'px'); iris.style.setProperty('--iy', y + 'px');
+  iris.classList.toggle('dark', !!dark);
+  void iris.offsetWidth; iris.classList.add('cover');
+  return wait(780);
+}
+async function irisReveal(){
+  iris.classList.add('fade'); await wait(620);
+  iris.style.transition = 'none'; iris.classList.remove('cover', 'fade', 'dark'); void iris.offsetWidth; iris.style.transition = '';
+}
+
+/* ---------------- corridor ---------------- */
+const BASE = '<div class="wall-strip"></div><div class="frieze"></div><div class="baseboard"></div><div class="carpet"></div>';
+function lanterns(count){ let h = ''; for (let k = 0; k < count; k++){ h += '<div class="lantern" style="left:calc(var(--S) * ' + (k + .5) + ')"><span class="cord"></span>' + LANTERN + '<span class="halo"></span></div><div class="refl" style="left:calc(var(--S) * ' + (k + .5) + ')"></div>'; } return h; }
+function pillars(from, to){ let h = ''; for (let k = from; k <= to; k++) h += '<div class="pillar" style="left:calc(var(--S) * ' + ((k + .5) * 1.35).toFixed(3) + ')"></div>'; return h; }
+function gateHTML(r, p){
+  const b = SAVE.best[r.id], d = b != null;
+  return '<button class="gate' + (d ? ' done' : '') + '" style="left:calc(var(--S) * ' + p + ')" data-pos="' + p + '" aria-label="Cổng phòng ' + r.name + '">' +
+    '<span class="g-glow"></span><span class="g-plaque"><span class="g-name">' + r.name + '</span><span class="g-stars">' + stars(d ? b : 0, r.qs.length) + '</span></span>' +
+    '<span class="g-frame"><span class="g-key">' + icon(r.icon) + '</span><span class="g-arch"><span class="g-in"></span><span class="g-door l"><i></i></span><span class="g-door r"><i></i></span></span><span class="g-spill"></span><span class="g-lamp l"></span><span class="g-lamp r"></span></span></button>';
+}
+function buildCorridor(){
+  scene.style.setProperty('--n', N + 2);
+  const all = doneN() === N;
+  let w = BASE + '<div class="hall-title" style="left:0"><small>CHÀO MỪNG ĐẾN</small><b>Bảo tàng Tư tưởng<br>Hồ Chí Minh</b></div>' +
+    '<div class="signpost" style="left:calc(var(--S) * .42)"><span>' + N + ' phòng ' + icon('arrowR') + '</span><i></i></div>' + lanterns(N + 1);
+  ROOMS.forEach((r, i) => { w += gateHTML(r, i + 1); });
+  w += '<button class="gate finish' + (all ? ' open' : '') + '" style="left:calc(var(--S) * ' + (N + 1) + ')" data-pos="' + (N + 1) + '" aria-label="Cổng hoàn thành">' +
+    '<span class="g-glow"></span><span class="g-plaque"><span class="g-name">Hoàn thành</span><span class="g-stars" style="font-size:12px;color:#d6af5c;font-weight:700">' + totalBest() + '/' + TOTAL_Q + ' ★</span></span>' +
+    '<span class="g-frame"><span class="g-key">' + icon('flag') + '</span><span class="g-arch"><span class="g-in"></span><span class="g-door l"><i></i></span><span class="g-door r"><i></i></span><span class="g-lock">' + icon('lock') + '</span></span><span class="g-spill"></span><span class="g-lamp l"></span><span class="g-lamp r"></span></span></button>';
+  world.innerHTML = w;
+  fg.innerHTML = pillars(-2, N + 2);
+}
+function markHere(p){ $$('.gate', world).forEach(g => g.classList.toggle('here', +g.dataset.pos === p)); }
+function renderHud(){
+  if (G.mode === 'corridor'){
+    const n = doneN();
+    hud.innerHTML = '<div class="brand"><span class="mark">' + MARK + '</span><span>Bảo tàng Tư tưởng <em>Hồ Chí Minh</em></span></div>' +
+      '<div class="hprog" role="img" aria-label="Đã hoàn thành ' + n + ' trên ' + N + ' phòng">' + ROOMS.map(r => '<i class="' + (isDone(r.id) ? 'on' : '') + '"></i>').join('') + '<b>' + n + '/' + N + '</b></div>';
+  } else {
+    const m = G.room.ex.length;
+    let dots = ''; for (let k = 1; k <= m; k++) dots += '<i class="' + (k <= G.st ? 'on' : '') + '"></i>';
+    hud.innerHTML = '<button class="hback" data-act="exit">' + icon('arrowL') + '<span>Hành lang</span></button><div class="htitle">' + G.room.name + '</div><div class="hsteps" aria-hidden="true">' + dots + '<i class="q ' + (G.st > m ? 'on' : '') + '"></i></div>';
+  }
+}
+function panelCorridor(){
+  const p = G.pos;
+  let h = '<div class="pin">';
+  if (p === 0){
+    h += '<div class="p-head"><span class="p-ava">' + MARK + '</span><span class="p-who">Hướng dẫn viên</span></div>' +
+      '<p class="p-line">Chào bạn! Hành trình có ' + N + ' phòng. Chạm vào một cổng để đi tới, rồi bấm “Vào phòng”.</p>' +
+      '<div class="p-actions"><span class="grow"></span><button class="btn btn-gold" data-act="go" data-to="' + firstUndone() + '">' + (firstUndone() > N ? 'Tới cổng Hoàn thành' : 'Đi tới cổng ' + firstUndone()) + ' ' + icon('arrowR') + '</button></div>';
+  } else if (p === N + 1){
+    const all = doneN() === N;
+    h += '<div class="p-head"><span class="p-ava">' + icon('flag') + '</span><span class="p-who">Cổng Hoàn thành</span></div>' +
+      (all ? '<p class="p-title">Bạn đã đi hết hành trình!</p><p class="p-sub">' + totalBest() + '/' + TOTAL_Q + ' câu trả lời đúng qua ' + N + ' phòng. Bạn có thể vào lại bất kỳ phòng nào để ôn tập.</p>'
+           : '<p class="p-line">Cổng này sẽ mở khi bạn hoàn thành cả ' + N + ' phòng. Còn ' + (N - doneN()) + ' phòng nữa.</p>') +
+      '<div class="p-actions"><button class="btn btn-line btn-round" data-act="go-prev" aria-label="Cổng trước">' + icon('arrowL') + '</button><span class="grow"></span>' +
+      (all ? '<button class="btn btn-line" data-act="restart">' + icon('rotate') + 'Đi lại từ đầu</button>' : '<button class="btn btn-gold" data-act="go" data-to="' + firstUndone() + '">Tới phòng chưa xong ' + icon('arrowR') + '</button>') + '</div>';
+  } else {
+    const r = ROOMS[p - 1], b = SAVE.best[r.id];
+    h += '<div class="p-head"><span class="p-ava">' + icon(r.icon) + '</span><span class="p-who">Cổng ' + p + '/' + N + '</span>' +
+      (b != null ? '<span class="stars-row" style="margin-left:auto">' + stars(b, r.qs.length) + '<span>' + b + '/' + r.qs.length + '</span></span>' : '<span class="p-meta">Chưa vào</span>') + '</div>' +
+      '<p class="p-title">' + r.name + '</p><p class="p-sub">' + r.sub + ' · ' + r.ex.length + ' hiện vật · ' + r.qs.length + ' câu hỏi</p>' +
+      '<div class="p-actions"><button class="btn btn-line btn-round" data-act="go-prev" aria-label="Cổng trước">' + icon('arrowL') + '</button>' +
+      '<button class="btn btn-gold" data-act="enter">' + (b != null ? 'Vào lại phòng' : 'Vào phòng') + ' ' + icon('arrowR') + '</button><span class="grow"></span>' +
+      '<button class="btn btn-line btn-round" data-act="go-next" aria-label="Cổng tiếp theo">' + icon('arrowR') + '</button></div>';
+  }
+  panel.innerHTML = h + '</div>';
+}
+function arriveSay(p){
+  if (p === 0) return;
+  if (p === N + 1){ say(doneN() === N ? 'Cổng Hoàn thành đã mở!' : 'Cổng này còn khóa…', 1800); return; }
+  const r = ROOMS[p - 1];
+  if (isDone(r.id)) say('Phòng này xong rồi! ' + SAVE.best[r.id] + '/' + r.qs.length + ' ★', 1900);
+  else say(pick(['Vào xem thử nhé!', 'Phòng này có gì nhỉ?', 'Tới nơi rồi!']), 1700);
+}
+async function goPos(p){
+  if (G.busy || G.mode !== 'corridor') return;
+  p = clamp(p, 0, N + 1);
+  G.busy = true; hush(); panelAway(); markHere(-1);
+  G.pos = p; SAVE.pos = p; store();
+  await walkTo(xFor());
+  markHere(p); stu.classList.add('look'); arriveSay(p);
+  panelCorridor(); panelBack();
+  G.busy = false;
+}
+
+/* ---------------- room ---------------- */
+function buildRoom(){
+  const r = G.room, m = r.ex.length;
+  scene.style.setProperty('--n', m + 3);
+  let w = BASE + lanterns(m + 1);
+  w += '<button class="gate done exitdoor" style="left:0" data-act="exit" aria-label="Về hành lang"><span class="g-plaque"><span class="g-name">Hành lang</span></span>' +
+    '<span class="g-frame"><span class="g-key">' + icon('home') + '</span><span class="g-arch"><span class="g-in"></span><span class="g-door l"><i></i></span><span class="g-door r"><i></i></span></span><span class="g-spill"></span></span></button>';
+  r.ex.forEach((id, k) => {
+    const e = EX[id];
+    w += '<div class="station" data-st="' + (k + 1) + '" style="left:calc(var(--S) * ' + (k + 1) + ')"><div class="spot"></div><div class="frame"><div class="frame-in">' +
+      '<span class="f-ico">' + icon(e.icon) + '</span><span class="f-title">' + e.title + '</span><span class="f-no">Hiện vật ' + (k + 1) + '/' + m + '</span></div></div></div>';
+  });
+  w += '<div class="podium" style="left:calc(var(--S) * ' + (m + 1) + ')"><div class="q-medal" id="qmedal">?</div><div class="q-stars" id="qstars">' + stars(0, r.qs.length) + '</div><div class="lectern">' + LECTERN + '</div></div>';
+  world.innerHTML = w;
+  fg.innerHTML = pillars(-1, m + 1);
+}
+const lit = st => $$('.station', world).forEach(s => s.classList.toggle('lit', +s.dataset.st === st));
+function seen(st){ const s = $('.station[data-st="' + st + '"] .frame', world); if (s && !s.querySelector('.f-seen')) s.insertAdjacentHTML('beforeend', '<span class="f-seen">' + icon('check') + '</span>'); }
+
+let typing = null;
+function stopTyping(finish){ if (!typing) return; clearInterval(typing.t); if (finish) typing.el.textContent = typing.text; typing = null; }
+function typeLine(el, text){
+  stopTyping(false);
+  if (!el) return;
+  if (RM()){ el.textContent = text; return; }
+  let i = 0; const per = Math.max(1, Math.ceil(text.length / 45));
+  el.textContent = '';
+  typing = { el: el, text: text, t: setInterval(() => { i += per; el.textContent = text.slice(0, i); if (i >= text.length) stopTyping(false); }, 18) };
+}
+function visual(v){
+  if (!v) return '';
+  const it = v.items || [], I = i => ' style="--i:' + i + '"';
+  switch (v.type){
+    case 'triad': return '<div class="v-triad">' + it.map((x, i) => '<span' + I(i) + '>' + x + '</span>').join('') + '</div>';
+    case 'flow': return '<div class="v-flow">' + it.map((x, i) => '<div' + I(i) + '><b>' + (i + 1) + '</b>' + x + '</div>').join('') + '</div>';
+    case 'quote': return '<figure class="v-quote"><q>' + v.text + '</q><cite>' + v.by + '</cite></figure>';
+    case 'scale': return '<div class="v-scale">' + it.map((r, i) => '<div class="row"' + I(i) + '><span class="yr">' + r[0] + '</span><div class="sc"><span class="track"><i style="width:' + [18, 45, 100][i] + '%;--i:' + i + '"></i></span><span class="sc-t"><b>' + r[1] + '</b><small>' + r[2] + '</small></span></div></div>').join('') + '</div>';
+    case 'pair': return '<div class="v-pair">' + it.map((p, i) => '<div' + I(i) + '><b>' + p[0] + '</b><span>' + p[1] + '</span></div>').join('') + '</div>';
+    case 'chips': return '<div class="v-chips">' + it.map((x, i) => '<span' + I(i) + '>' + x + '</span>').join('') + '</div>';
+    case 'timeline': return '<div class="v-timeline">' + it.map((p, i) => '<div' + I(i) + '><i></i><b>' + p[0] + '</b><span>' + p[1] + '</span></div>').join('') + '</div>';
+    case 'grid': return '<div class="v-grid">' + it.map((x, i) => '<span' + I(i) + '><b>' + (i + 1) + '</b>' + x + '</span>').join('') + '</div>';
+    case 'list': return '<ul class="v-list">' + it.map((x, i) => '<li' + I(i) + '>' + x + '</li>').join('') + '</ul>';
+    case 'numbered': return '<ol class="v-num">' + it.map((x, i) => '<li' + I(i) + '><b>' + (i + 1) + '</b><span>' + x + '</span></li>').join('') + '</ol>';
+  }
+  return '';
+}
+function panelExhibit(){
+  const r = G.room, m = r.ex.length, id = r.ex[G.st - 1], e = EX[id], lines = LINES[id], L = lines[G.line], last = G.line === lines.length - 1, isV = L.indexOf('V:') === 0;
+  const next = !last ? 'Tiếp' : (G.st < m ? 'Hiện vật tiếp' : 'Đến bục câu hỏi');
+  panel.innerHTML = '<div class="pin"><div class="p-head"><span class="p-ava">' + MARK + '</span><span class="p-who">Hướng dẫn viên</span><span class="p-meta"><span class="p-mt">' + e.title + '</span><span class="dots">' + lines.map((x, i) => '<i class="' + (i <= G.line ? 'on' : '') + '"></i>').join('') + '</span></span></div>' +
+    (isV ? '<p class="p-cap">' + L.slice(2) + '</p>' + visual(e.visual) : '<p class="p-line"><span class="sr">' + L + '</span><span class="typed" aria-hidden="true"></span></p>') +
+    '<div class="p-actions"><button class="btn btn-line btn-round" data-act="line-prev" aria-label="Quay lại"' + (G.line === 0 && G.st === 1 ? ' disabled' : '') + '>' + icon('arrowL') + '</button>' +
+    '<button class="link" data-act="more">Đọc thêm</button><span class="grow"></span><button class="btn btn-gold" data-act="line-next">' + next + ' ' + icon('arrowR') + '</button></div></div>';
+  if (!isV) typeLine($('.typed', panel), L);
+}
+function qList(){ return G.room.qs.map(id => Q[id]); }
+function panelQuiz(){
+  const qs = qList(), q = qs[G.qi], p = G.picks[G.qi], L = 'ABCD';
+  let h = '<div class="pin"><div class="p-head"><span class="p-ava">' + icon('help') + '</span><span class="p-who">Bục câu hỏi</span><span class="p-meta">Câu ' + (G.qi + 1) + '/' + qs.length + '<span class="dots">' + qs.map((x, i) => '<i class="' + (G.picks[i] != null ? 'on' : '') + '"></i>').join('') + '</span></span></div>';
+  if (q.post){ const ps = q.post, ini = ps.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    h += '<div class="post"><div class="post-head"><span class="avatar" style="background:hsl(' + ps.hue + ' 42% 40%)">' + ini + '</span><div><b>' + ps.name + '</b><small>' + ps.handle + ' · ' + ps.time + '</small></div></div><p>' + ps.text + '</p></div>'; }
+  h += '<p class="qtext">' + q.text + '</p><div class="opts">';
+  q.options.forEach((t, i) => {
+    let cls = 'opt', dis = '';
+    if (p != null){ dis = ' disabled'; cls += i === q.answer ? ' right' : (i === p ? ' wrong' : ' dim'); }
+    h += '<button class="' + cls + '"' + dis + ' style="--i:' + i + '" data-act="answer" data-i="' + i + '"><span class="lt">' + L[i] + '</span><span>' + t + '</span></button>';
+  });
+  h += '</div>';
+  if (p != null){
+    h += p === q.answer ? '<div class="fb ok">' + icon('checkCircle') + '<div><b>Chính xác!</b>' + q.explain + '</div></div>' : '<div class="fb no">' + icon('xCircle') + '<div><b>Chưa đúng.</b>' + q.explain + '</div></div>';
+    h += '<div class="p-actions"><span class="grow"></span><button class="btn btn-gold" data-act="q-next">' + (G.qi + 1 < qs.length ? 'Câu tiếp' : 'Xem kết quả') + ' ' + icon('arrowR') + '</button></div>';
+  }
+  panel.innerHTML = h + '</div>';
+}
+function scoreNow(){ const qs = qList(); return qs.filter((q, i) => G.picks[i] === q.answer).length; }
+function panelResult(){
+  const qs = qList(), s = scoreNow();
+  const msg = s === qs.length ? 'Xuất sắc! Bạn nắm chắc nội dung phòng này.' : s >= qs.length / 2 ? 'Tốt lắm! Xem lại câu chưa đúng bên dưới nhé.' : 'Chưa sao, xem lại hiện vật rồi thử lại nhé.';
+  const wrong = qs.map((q, i) => G.picks[i] === q.answer ? '' : '<div>' + icon('xCircle') + '<span>' + q.text + '<br><b>Đáp án:</b> ' + q.options[q.answer] + '</span></div>').join('');
+  panel.innerHTML = '<div class="pin result"><div class="big-stars">' + stars(s, qs.length) + '</div><p class="p-title">' + s + '/' + qs.length + ' câu đúng</p><p class="p-sub">' + msg + '</p>' +
+    (wrong ? '<div class="review">' + wrong + '</div>' : '') +
+    '<div class="p-actions"><button class="btn btn-line" data-act="q-retry">' + icon('rotate') + 'Làm lại</button><button class="btn btn-gold" data-act="exit">Về hành lang ' + icon('arrowR') + '</button></div></div>';
+}
+function setQStars(){ const n = scoreNow(); $$('#qstars svg', world).forEach((s, i) => s.classList.toggle('on', i < n)); }
+
+async function enterRoom(){
+  const p = G.pos;
+  if (G.busy || G.mode !== 'corridor' || p < 1 || p > N) return;
+  G.busy = true; hush(); panelAway();
+  const gate = $('.gate[data-pos="' + p + '"]', world);
+  gate.classList.add('open');
+  say('Vào thôi!', 1000);
+  await wait(700);
+  stu.classList.add('walking', 'entering');
+  await wait(760);
+  const a = gate.querySelector('.g-arch').getBoundingClientRect(), s = scene.getBoundingClientRect();
+  await irisCover(a.left + a.width / 2 - s.left, a.top + a.height * .6 - s.top, false);
+  stu.classList.remove('walking', 'entering', 'look');
+  G.mode = 'room'; G.room = ROOMS[p - 1]; G.st = 0; G.line = 0; G.qi = 0; G.picks = []; G.phase = 'exhibit'; G.justDone = false;
+  setModeClass(); measure(); buildRoom(); G.x = xFor(); G.sx = M.sx; applyCam(); renderHud(); face(1);
+  document.title = G.room.name + ' · Bảo tàng Tư tưởng Hồ Chí Minh';
+  stu.classList.add('arrive');
+  await irisReveal();
+  stu.classList.remove('arrive');
+  await walkStation(1);
+  G.busy = false;
+}
+async function walkStation(st){
+  panelAway(); lit(0); hush();
+  G.st = st; G.line = 0; renderHud();
+  await walkTo(xFor());
+  lit(st); stu.classList.add('look');
+  panelExhibit(); panelBack();
+}
+async function toQuiz(){
+  G.busy = true; panelAway(); lit(0); hush();
+  G.st = G.room.ex.length + 1; renderHud();
+  await walkTo(xFor());
+  G.phase = 'quiz'; setModeClass(); measure();
+  await tween(xFor(), M.sx, 800);
+  say('Thử sức nào!', 1400);
+  G.qi = 0; G.picks = []; setQStars();
+  panelQuiz(); panelBack();
+  G.busy = false;
+}
+function answer(i){
+  if (G.phase !== 'quiz' || G.picks[G.qi] != null) return;
+  const q = qList()[G.qi]; G.picks[G.qi] = i;
+  if (i === q.answer){ pose('cheer', 1150); setQStars(); const med = $('#qmedal', world); if (med) burstEl(med, 24); say(pick(['Đúng rồi!', 'Chuẩn luôn!', 'Tuyệt vời!']), 1300); }
+  else { pose('sad', 950); say(pick(['Ồ, tiếc quá…', 'Sai mất rồi…']), 1300); }
+  panelQuiz();
+}
+function qNext(){
+  const qs = qList();
+  if (G.qi + 1 < qs.length){ G.qi++; panelQuiz(); return; }
+  const s = scoreNow(), id = G.room.id, prev = SAVE.best[id];
+  SAVE.best[id] = Math.max(s, prev == null ? 0 : prev); store();
+  G.justDone = prev == null || s > prev;
+  G.phase = 'result';
+  const med = $('#qmedal', world);
+  if (med){ med.classList.add('won'); med.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + STAR_P + '</svg>'; if (s >= qs.length / 2) burstEl(med, 40); }
+  if (s >= qs.length / 2){ pose('cheer', 1150); say(s === qs.length ? 'Tuyệt đối luôn!' : 'Xong phòng rồi!', 1600); } else say('Lần sau sẽ tốt hơn!', 1600);
+  panelResult();
+}
+function qRetry(){
+  G.phase = 'quiz'; G.qi = 0; G.picks = []; setQStars();
+  const med = $('#qmedal', world); if (med){ med.classList.remove('won'); med.textContent = '?'; }
+  panelQuiz();
+}
+async function exitRoom(){
+  if (G.busy || G.mode !== 'room') return;
+  G.busy = true; stopTyping(false); hush(); panelAway(); closeSheet();
+  const idx = ROOMS.indexOf(G.room), just = G.justDone;
+  await irisCover(W / 2, H * .5, true);
+  G.mode = 'corridor'; G.room = null; G.phase = 'exhibit'; G.pos = idx + 1; SAVE.pos = G.pos; store();
+  setModeClass(); measure(); buildCorridor(); G.x = xFor(); G.sx = M.sx; applyCam(); renderHud(); face(1);
+  document.title = 'Bảo tàng Tư tưởng Hồ Chí Minh';
+  markHere(G.pos); stu.classList.add('look');
+  await irisReveal();
+  const gate = $('.gate[data-pos="' + G.pos + '"]', world);
+  if (just && gate){
+    const st = gate.querySelector('.g-stars'); if (st) st.classList.add('pop');
+    burstEl(gate.querySelector('.g-plaque'), 22);
+    const r = ROOMS[idx]; say('Xong phòng “' + r.name + '”! ' + SAVE.best[r.id] + '/' + r.qs.length + ' ★', 2200);
+    if (doneN() === N){
+      await wait(1100);
+      const fin = $('.gate.finish', world); if (fin) fin.classList.add('open');
+      burstAt(W * .3, H * .3, 30); burstAt(W * .7, H * .3, 30); burstAt(W * .5, H * .2, 30);
+      say('Mình đã đi hết ' + N + ' phòng!', 2600);
+    }
+  } else arriveSay(G.pos);
+  panelCorridor(); panelBack();
+  G.busy = false;
+}
+function openMore(){
+  const e = EX[G.room.ex[G.st - 1]];
+  sheet.innerHTML = '<div class="sheet-card" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="sheet-top"><h2 id="shT">' + e.title + '</h2><button class="btn btn-line btn-round" data-act="close-sheet" aria-label="Đóng">' + icon('x') + '</button></div>' +
+    e.learn.map(p => '<p>' + p + '</p>').join('') + '<p class="remember"><b>Cần nhớ:</b> ' + e.remember + '</p></div>';
+  sheet.hidden = false;
+  const b = $('[data-act="close-sheet"]', sheet); if (b) b.focus();
+}
+function closeSheet(){ if (!sheet.hidden){ sheet.hidden = true; sheet.innerHTML = ''; } }
+
+/* ---------------- intro + drum ---------------- */
+let drumRaf = 0;
+function drum(cv){
+  const ctx = cv.getContext && cv.getContext('2d'); if (!ctx) return;
+  const bands = [
+    { t: 'ring', r: .24 }, { t: 'ticks', r1: .26, r2: .3, n: 70, d: 1 }, { t: 'ring', r: .32 },
+    { t: 'circles', r1: .34, r2: .42, n: 24, d: -1 }, { t: 'ring', r: .44, w: 1.5 },
+    { t: 'birds', r1: .47, r2: .66, n: 8, d: 1 }, { t: 'ring', r: .69, w: 1.5 },
+    { t: 'zig', r1: .71, r2: .76, n: 90, d: -1 }, { t: 'ring', r: .78 },
+    { t: 'circles', r1: .8, r2: .88, n: 40, d: 1 }, { t: 'ring', r: .92 }, { t: 'ticks', r1: .93, r2: .97, n: 120, d: -1 }
+  ];
+  function bird(L, h){
+    ctx.beginPath(); ctx.ellipse(0, 0, L * .3, h * .11, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(L * .26, -h * .02); ctx.quadraticCurveTo(L * .4, -h * .22, L * .45, -h * .09); ctx.lineTo(L * .64, h * .02); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-L * .06, -h * .05); ctx.lineTo(-L * .22, -h * .4); ctx.lineTo(L * .12, -h * .08); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-L * .28, 0); ctx.lineTo(-L * .5, -h * .15); ctx.lineTo(-L * .46, h * .06); ctx.closePath(); ctx.fill();
+  }
+  function paint(t){
+    const r0 = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = Math.max(1, Math.round(r0.width * dpr)), h = Math.max(1, Math.round(r0.height * dpr));
+    if (cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; }
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, w, h);
+    const R = Math.min(w, h) / 2 * .97; ctx.translate(w / 2, h / 2);
+    ctx.strokeStyle = ctx.fillStyle = 'rgba(214,175,92,.85)'; const lw = Math.max(1, R * .005); ctx.lineWidth = lw;
+    ctx.save(); ctx.rotate(t * .03); ctx.beginPath();
+    for (let i = 0; i < 28; i++){ const a = -Math.PI / 2 + i * Math.PI / 14, rr = i % 2 ? R * .07 : R * .22; i ? ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr) : ctx.moveTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+    ctx.closePath(); ctx.fill(); ctx.restore();
+    bands.forEach(b => {
+      const rot = (b.d || 0) * t * .03;
+      if (b.t === 'ring'){ ctx.beginPath(); ctx.arc(0, 0, b.r * R, 0, Math.PI * 2); ctx.lineWidth = lw * (b.w || 1); ctx.stroke(); ctx.lineWidth = lw; return; }
+      const r1 = b.r1 * R, r2 = b.r2 * R, rm = (r1 + r2) / 2, st = Math.PI * 2 / b.n;
+      if (b.t === 'ticks'){ ctx.beginPath(); for (let i = 0; i < b.n; i++){ const a = rot + i * st; ctx.moveTo(Math.cos(a) * r1, Math.sin(a) * r1); ctx.lineTo(Math.cos(a) * r2, Math.sin(a) * r2); } ctx.stroke(); }
+      else if (b.t === 'circles'){ const cr = (r2 - r1) * .36; for (let i = 0; i < b.n; i++){ const a = rot + i * st; ctx.beginPath(); ctx.arc(Math.cos(a) * rm, Math.sin(a) * rm, cr, 0, Math.PI * 2); ctx.stroke(); } }
+      else if (b.t === 'zig'){ ctx.beginPath(); for (let i = 0; i <= b.n; i++){ const a = rot + i * st, rr = i % 2 ? r2 : r1; i ? ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr) : ctx.moveTo(Math.cos(a) * rr, Math.sin(a) * rr); } ctx.stroke(); }
+      else if (b.t === 'birds'){ for (let i = 0; i < b.n; i++){ ctx.save(); ctx.rotate(rot + i * st); ctx.translate(rm, 0); ctx.rotate(Math.PI / 2); bird(rm * st * .62, r2 - r1); ctx.restore(); } }
+    });
+  }
+  let last = 0;
+  const loop = ts => { if (!document.body.contains(cv) || intro.classList.contains('hide')) return; if (ts - last > 40){ last = ts; paint(ts / 1000); } drumRaf = requestAnimationFrame(loop); };
+  if (RM()) requestAnimationFrame(() => paint(0)); else drumRaf = requestAnimationFrame(loop);
+}
+function showIntro(){
+  const started = doneN() > 0 || G.pos > 0;
+  intro.innerHTML = '<canvas id="introDrum" aria-hidden="true"></canvas><div class="intro-card"><p class="kick">Bảo tàng tương tác</p><h1>Bảo tàng Tư tưởng <span>Hồ Chí Minh</span></h1>' +
+    '<p>Cùng bạn sinh viên đi qua ' + N + ' cổng phòng. Mỗi phòng có hiện vật và câu hỏi ôn tập.</p>' +
+    '<button class="btn btn-gold" data-act="start">' + (started ? 'Tiếp tục hành trình' : 'Bắt đầu tham quan') + ' ' + icon('arrowR') + '</button>' +
+    '<small>Chạm vào cổng để đi tới · Trên máy tính dùng phím ← →</small><small>Nội dung theo giáo trình Tư tưởng Hồ Chí Minh</small></div>';
+  intro.classList.remove('hide');
+  drum($('#introDrum'));
+}
+async function start(){
+  if (G.started) return;
+  G.started = true;
+  intro.classList.add('hide');
+  await wait(450);
+  const target = firstUndone();
+  if (G.pos === 0 && target > 0){ say('Đi thôi!', 1100); await wait(700); }
+  if (target === G.pos){ markHere(G.pos); stu.classList.add('look'); arriveSay(G.pos); panelCorridor(); panelBack(); }
+  else goPos(target);
+}
+
+/* ---------------- ambience ---------------- */
+(function makeDust(){
+  const box = $('#dust'); let h = '';
+  for (let i = 0; i < 22; i++) h += '<i style="left:' + (Math.random() * 100).toFixed(1) + '%;top:' + (20 + Math.random() * 60).toFixed(1) + '%;animation-duration:' + (9 + Math.random() * 10).toFixed(1) + 's;animation-delay:-' + (Math.random() * 12).toFixed(1) + 's;--dx:' + (Math.random() * 60 - 30).toFixed(0) + 'px"></i>';
+  box.innerHTML = h;
+})();
+
+/* ---------------- events ---------------- */
+const ACT = {
+  start: start,
+  go(el){ goPos(+el.dataset.to); },
+  'go-next'(){ goPos(G.pos + 1); },
+  'go-prev'(){ goPos(G.pos - 1); },
+  enter: enterRoom,
+  exit: exitRoom,
+  'line-next'(){
+    if (G.busy) return;
+    if (typing){ stopTyping(true); return; }
+    const lines = LINES[G.room.ex[G.st - 1]];
+    if (G.line < lines.length - 1){ G.line++; panelExhibit(); return; }
+    seen(G.st);
+    if (G.st < G.room.ex.length){ G.busy = true; walkStation(G.st + 1).then(() => { G.busy = false; }); }
+    else toQuiz();
+  },
+  'line-prev'(){
+    if (G.busy) return;
+    stopTyping(false);
+    if (G.line > 0){ G.line--; panelExhibit(); }
+    else if (G.st > 1){ G.busy = true; walkStation(G.st - 1).then(() => { G.busy = false; }); }
+  },
+  more: openMore,
+  'close-sheet': closeSheet,
+  answer(el){ answer(+el.dataset.i); },
+  'q-next': qNext,
+  'q-retry': qRetry,
+  restart(){
+    if (G.busy) return;
+    SAVE = { best: {}, pos: 0 }; store();
+    buildCorridor(); renderHud(); G.pos = 0; G.x = 0; applyCam(); markHere(0);
+    panelCorridor(); say('Bắt đầu lại nào!', 1600);
+  }
+};
+document.addEventListener('click', ev => {
+  if (ev.target === sheet){ closeSheet(); return; }
+  const a = ev.target.closest('[data-act]');
+  if (a && ACT[a.dataset.act]){ ACT[a.dataset.act](a); return; }
+  const g = ev.target.closest('.gate[data-pos]');
+  if (g && G.mode === 'corridor' && G.started){ const p = +g.dataset.pos; if (p === G.pos){ if (p >= 1 && p <= N) enterRoom(); else arriveSay(p); } else goPos(p); }
+});
+document.addEventListener('keydown', ev => {
+  if (!sheet.hidden){ if (ev.key === 'Escape') closeSheet(); return; }
+  if (!G.started){ if (ev.key === 'Enter' && !ev.target.closest('button')){ ev.preventDefault(); start(); } return; }
+  const onBtn = ev.target.closest && ev.target.closest('button, input, textarea');
+  if (G.mode === 'corridor'){
+    if (ev.key === 'ArrowRight'){ ev.preventDefault(); goPos(G.pos + 1); }
+    else if (ev.key === 'ArrowLeft'){ ev.preventDefault(); goPos(G.pos - 1); }
+    else if (ev.key === 'Enter' && !onBtn) enterRoom();
+  } else {
+    if (ev.key === 'Escape') exitRoom();
+    else if (G.phase === 'exhibit'){
+      if (ev.key === 'ArrowRight' || ((ev.key === 'Enter' || ev.key === ' ') && !onBtn)){ ev.preventDefault(); ACT['line-next'](); }
+      else if (ev.key === 'ArrowLeft'){ ev.preventDefault(); ACT['line-prev'](); }
+    } else if (G.phase === 'quiz'){
+      const k = 'abcd'.indexOf(ev.key.toLowerCase()), n = '1234'.indexOf(ev.key);
+      if (k > -1 || n > -1) answer(k > -1 ? k : n);
+      else if ((ev.key === 'Enter' || ev.key === 'ArrowRight') && !onBtn && G.picks[G.qi] != null) qNext();
+    }
+  }
+});
+let px = null;
+scene.addEventListener('pointerdown', ev => { if (ev.target.closest('.panel, .hud, .intro, .sheet')) { px = null; return; } px = { x: ev.clientX, y: ev.clientY }; });
+scene.addEventListener('pointerup', ev => {
+  if (!px || G.mode !== 'corridor' || !G.started) { px = null; return; }
+  const dx = ev.clientX - px.x, dy = ev.clientY - px.y; px = null;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) goPos(G.pos + (dx < 0 ? 1 : -1));
+});
+['scroll'].forEach(t => { scene.addEventListener(t, () => { if (scene.scrollLeft || scene.scrollTop){ scene.scrollLeft = 0; scene.scrollTop = 0; } }); $('#app').addEventListener(t, e => { const el = e.currentTarget; if (el.scrollLeft || el.scrollTop){ el.scrollLeft = 0; el.scrollTop = 0; } }); });
+let rt = 0;
+window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (G.busy) return; measure(); G.x = xFor(); G.sx = M.sx; applyCam(); }, 120); });
+
+/* ---------------- boot ---------------- */
+setModeClass(); measure(); buildCorridor(); renderHud();
+G.x = xFor(); G.sx = M.sx; applyCam(); markHere(G.pos);
+panelAway();
+showIntro();
+})();
+
+</script>
+</body>
+</html>
